@@ -1,3 +1,5 @@
+
+{% load staticfiles %}
 <!DOCTYPE html>
 <!-- saved from url=(0049)https://getbootstrap.com/docs/4.3/examples/album/ -->
 <html lang="en" class="gr__getbootstrap_com">
@@ -33,7 +35,7 @@
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="./resources/album.css" rel="stylesheet">
+    <link href="{% static 'textClassifier/style.css' %}" rel="stylesheet">
   </head>
 
 
@@ -45,7 +47,7 @@
       <div class="row">
         <div class="col-sm-8 col-md-7 py-4">
           <h4 class="text-white">About</h4>
-          <p class="text-muted">The web application is a supreme present to the course CSE256 - Statistical Natural Language Processing. Life should be convenient and </p>
+          <p class="text-muted">The web application is a supreme present to the course CSE256 - Statistical Natural Language Processing. Life should be convenient. We create this application for either  course credits or the human beings. </p>
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
           <h4 class="text-white">Contact</h4>
@@ -71,16 +73,52 @@
   </div>
 </header>
 
-<main role="main">
+<main role="main" class = "bd-content" >
 
   <section class="jumbotron text-center">
     <div class="container">
       <h1 class="jumbotron-heading">Judge your Review</h1>
-      <p class="lead text-muted">Review is called review because it lets people review the sentiment and emotion behind the review</p>
+      <p class="lead text-muted">Review the review, give your product a better review.</p>
       <p>
-        <a href="https://getbootstrap.com/docs/4.3/examples/album/#" class="btn btn-primary my-2">Main call to action</a>
-        <a href="https://getbootstrap.com/docs/4.3/examples/album/#" class="btn btn-secondary my-2">Secondary action</a>
+
       </p>
+      <div class="row">
+        <div class = "col-sm-6">
+          <div class="input-group input-group-lg shadow">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-dark text-white">Input</span>
+            </div>
+            <textarea onKeyPress="return charLimit(this)" placeholder="Type something here......" onKeyUp="return characterCount(this)"  rows="8" class="form-control" aria-label="With textarea" id="inputText"></textarea>
+
+          </div>
+          <p class="text-right text-black-50"><strong><span id="charCount">1000</span></strong> more characters available.</p>        
+          <div class="row p-sm-3">
+            <div class="col-sm-6 text-left ">
+              <button type="button" class="btn btn-dark btn-block">Predict</button>
+            </div>
+            <div class="col-sm-6 text-right">
+              <button type="button" class="btn btn-outline-dark btn-block">Clear</button>      
+            </div>
+          </div>
+         
+        </div>
+
+        <div class = "col-sm-6">
+          <ul class="list-group">
+              <li class="list-group-item bg-success text-white">It is a positive review :)</li>
+              <li class="list-group-item">It's a negative review :(</li>
+          </ul>
+          <p class="text-left pt-sm-4">
+            <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Explanation
+            </a>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+              </div>
+            </div>
+          </p>
+        </div>
     </div>
   </section>
 
@@ -100,6 +138,28 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script>
+$('#inputText').each(function () {
+  this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+}).on('input', function () {
+  this.style.height = 'auto';
+  this.style.height = (this.scrollHeight) + 'px';
+});
+
+var maxLength=1000;
+function charLimit(el) {
+    if (el.value.length > maxLength) return false;
+    return true;
+}
+function characterCount(el) {
+    var charCount = document.getElementById('charCount');
+    if (el.value.length > maxLength) el.value = el.value.substring(0,maxLength);
+    if (charCount) charCount.innerHTML = maxLength - el.value.length;
+    return true;
+}
+
+</script>
 
 </body>
 
