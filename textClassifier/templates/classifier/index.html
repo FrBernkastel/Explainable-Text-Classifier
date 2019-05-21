@@ -73,48 +73,54 @@
   </div>
 </header>
 
-<main role="main" class = "bd-content" >
-
+<main role="main" class = "bd-content shadow-lg" >
   <section class="jumbotron text-center">
     <div class="container">
       <h1 class="jumbotron-heading">Judge your Review</h1>
       <p class="lead text-muted">Review the review, give your product a better review.</p>
-      <p>
 
-      </p>
       <div class="row">
         <div class = "col-sm-6">
-          <div class="input-group input-group-lg shadow">
-            <div class="input-group-prepend">
-              <span class="input-group-text bg-dark text-white">Input</span>
-            </div>
-            <textarea onKeyPress="return charLimit(this)" placeholder="Type something here......" onKeyUp="return characterCount(this)"  rows="8" class="form-control" aria-label="With textarea" id="inputText"></textarea>
+          <form id="textForm" action="{% url 'classifier:predict' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group input-group-lg shadow">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-dark text-white">Input</span>
+              </div>
+              <textarea onKeyPress="return charLimit(this)" placeholder="{{ result }}" onKeyUp="return characterCount(this)"  rows="8" class="form-control" aria-label="With textarea" id="input_text" name = "input_text"></textarea>
 
-          </div>
-          <p class="text-right text-black-50"><strong><span id="charCount">1000</span></strong> more characters available.</p>        
-          <div class="row p-sm-3">
-            <div class="col-sm-6 text-left ">
-              <button type="button" class="btn btn-dark btn-block">Predict</button>
             </div>
-            <div class="col-sm-6 text-right">
-              <button type="button" class="btn btn-outline-dark btn-block">Clear</button>      
+            <p class="text-right text-black-50"><strong><span id="charCount">1000</span></strong> more characters available.</p>        
+            <div class="row p-sm-3">
+              <div class="col-sm-6 text-left ">
+                <button type="submit" class="btn btn-dark btn-block">Predict</button>
+              </div>
+              <div class="col-sm-6 text-right">
+                <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>      
+              </div>
             </div>
-          </div>
-         
+          </form>
         </div>
 
         <div class = "col-sm-6">
-          <ul class="list-group">
-              <li class="list-group-item bg-success text-white">It is a positive review :)</li>
-              <li class="list-group-item">It's a negative review :(</li>
-          </ul>
+          <div class = "row">
+              <div class = "col-sm-6 list-group-item" id = "pos_paragraph">
+                <p hidden="hidden"> {{ pos_flag }} </p>
+                <p>It is a positive review :)</p>
+              </div>
+
+              <div class = "col-sm-6 list-group-item" id = "neg_paragraph"> 
+                <p hidden="hidden"> {{ neg_flag }} </p>
+                <p>It's a negative review :(</p>              
+              </div>
+          </div>
           <p class="text-left pt-sm-4">
             <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Explanation
             </a>
             <div class="collapse" id="collapseExample">
               <div class="card card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                {{ explanation }}
               </div>
             </div>
           </p>
@@ -140,7 +146,21 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
-$('#inputText').each(function () {
+
+ $(function(){
+    var pos_flag = $("#pos_paragraph").children(":first").text();
+    var neg_flag = $("#neg_paragraph").children(":first").text();
+    if (pos_flag == 1) {
+      $("#pos_paragraph").addClass("bg-success");
+      $("#pos_paragraph").addClass("text-white");
+    } else {
+      $("#neg_paragraph").addClass("bg-danger");
+      $("#neg_paragraph").addClass("text-white");
+    }
+
+ });
+
+$('#input_text').each(function () {
   this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
 }).on('input', function () {
   this.style.height = 'auto';
@@ -159,8 +179,17 @@ function characterCount(el) {
     return true;
 }
 
+function clearText(el) {
+  $('#input_text').val("");
+  characterCount(el);
+}
+
+function transfer() {
+
+}
+
+
 </script>
 
 </body>
-
 </html>
