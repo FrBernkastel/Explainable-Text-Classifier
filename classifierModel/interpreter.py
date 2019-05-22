@@ -1,0 +1,65 @@
+
+class explain():
+    def __init__(self, classifier):
+        # the threshold that means import
+        self.pos_num = 200
+        self.neg_num = 300
+
+        self.lr = classifier
+        self.features = self.feature_arr()
+        self.coefs = self.coef_arr()
+
+        self.pos_threshold, self.neg_threshold = self.get_threshold()
+
+    def feature_arr(self):
+        """
+
+        :return: the feature array
+        """
+        features = self.lr.sentiment.count_vect.get_feature_names()
+        return features
+
+    def coef_arr(self):
+        """
+
+        :return: the coefficient array
+        """
+        coefs = self.lr.cls.coef_[0]
+        return coefs
+
+    def get_threshold(self):
+        """
+
+        :return: return the threshold of mater coefficient
+        """
+        # l = [(self.features[i], self.coefs[i]) for i in range(len(self.features))]
+        # l.sort(key=lambda tp: tp[1])
+        l = self.coefs.copy()
+        l.sort()
+        pos_thre = l[-self.pos_num]
+        neg_thre = l[self.neg_num]
+        print(pos_thre)
+        print(neg_thre)
+        return (pos_thre, neg_thre)
+
+    def get_explanation(self, vec):
+        """
+
+        :param vec: the vector of target text
+        :return: a dictionary of import words
+        """
+        # get feature to coefficient mapping
+        mapping = [(self.features[i], self.coefs[i]) for i in vec.indices]
+        mapping.sort(key=lambda tp: tp[1])
+        print(mapping)
+        valued_pos = [x[0] for x in mapping if x[1] >= self.pos_threshold]
+        valued_neg = [x[0] for x in mapping if x[1] <= self.neg_threshold]
+        res = dict()
+        res['valued_pos'] = valued_pos
+        res['valued_neg'] = valued_neg
+        return res
+
+
+
+
+
