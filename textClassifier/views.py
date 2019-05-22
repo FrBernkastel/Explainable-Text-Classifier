@@ -19,27 +19,31 @@ def predict(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")
     
-        label = remote_predict(input_text)
+        label,ex = remote_predict(input_text)
         
         pos_flag = label
         neg_flag = 1-pos_flag
 
-        context = {"explanation": input_text,"pos_flag":pos_flag,"neg_flag":neg_flag}
+        message = "The label is {}, because it contains words like: {}".format("POS" if pos_flag == 1 else "NEG",ex)
+
+        context = {"explanation": message,"pos_flag":pos_flag,"neg_flag":neg_flag}
     
     return render(request, 'classifier/index.html', context)
 
 
 def remote_predict(text):
-    HOST = '100.81.51.71'  # Standard loopback interface address (localhost)
+    HOST = "localhost"  # Standard loopback interface address (localhost)
     PORT =  8001        # Port to listen on (non-privileged ports are > 1023)
     try:
         
         with rpyc.connect(HOST, PORT) as conn:
-            
             #text = "I love the dog, and the world, and, everything"
-            t = conn.root.predict(text)
+            t,ex = conn.root.predict(text)
+            ex = list(ex)
+            print(type(t),type(ex))
+            print(t,ex)
         
-            return t
+            return t,ex
 
     except Exception as e:
         raise e
