@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python3
 
 import tarfile
 from scipy.sparse import vstack
@@ -121,7 +121,7 @@ class LogisRegression(object):
 
     def __init__(self, tarfname = "data/sentiment.tar.gz"):
         self.tarfname = tarfname
-        self.sentiment = None
+        self.count_vect = None
         self.cls = self.get_cls(Data_Reader())
         
     def get_cls(self, dr):
@@ -130,16 +130,17 @@ class LogisRegression(object):
         """
 
         print("Reading data")
-        self.sentiment = dr.read_files(self.tarfname)
-        unlabeled = dr.read_unlabeled(self.tarfname, self.sentiment)
+        sentiment = dr.read_files(self.tarfname)
+        self.count_vect = sentiment.count_vect
+        unlabeled = dr.read_unlabeled(self.tarfname, sentiment)
 
         print("\nTraining classifier")   
         length = unlabeled.X.get_shape()[0]
-        expand_step = int(self.sentiment.trainX.get_shape()[0]/30)
+        expand_step = int(sentiment.trainX.get_shape()[0]/30)
         
         # %%
-        Dl_x = self.sentiment.trainX
-        Dl_y = self.sentiment.trainy
+        Dl_x = sentiment.trainX
+        Dl_y = sentiment.trainy
         Du = unlabeled.X[:int(length*5/10),:]
         added = set()  # the index of what already been added to labeled data
         acc_devs = []
@@ -149,7 +150,7 @@ class LogisRegression(object):
         while itr < 1000:
             cls = self.train_classifier(Dl_x, Dl_y)
             clss.append(cls)
-            acc_dev = self.evaluate(self.sentiment.devX, self.sentiment.devy, cls, 'dev')
+            acc_dev = self.evaluate(sentiment.devX, sentiment.devy, cls, 'dev')
             acc_devs.append(acc_dev)
 
             # predict

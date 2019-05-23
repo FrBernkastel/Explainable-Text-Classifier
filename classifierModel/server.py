@@ -4,6 +4,9 @@
 import rpyc
 import classifier as cf
 import interpreter as ip
+import json
+import os
+import pickle
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
 PORT = 8001        # Port to listen on (non-privileged ports are > 1023)
@@ -16,7 +19,12 @@ class PredictServer(rpyc.Service):
     """
 
     def __init__(self, interpreter):
-        self.lr = cf.LogisRegression()
+        if not os.path.isfile('classifier.backup'):
+            self.lr = cf.LogisRegression()
+        else:
+            with open('classifier.backup', 'rb') as backup_file:
+                self.lr = pickle.load( backup_file)
+            print("finished")
         self.ip = interpreter(self.lr)
 
     def exposed_predict(self, text):
@@ -30,15 +38,28 @@ class PredictServer(rpyc.Service):
         except:
             pass
 
-        vec = self.lr.sentiment.count_vect.transform([text])
-        res = self.lr.cls.predict(vec)[0]
-        ex = self.ip.get_explanation(vec[0])
-        pre = int(res)
+        vec = self.lr.count_vect.transform([text])[0]
+        pre = int(self.lr.cls.predict(vec))
+        # probability of the label
+        pro = self.lr.cls.predict_proba(vec)[0][pre]
+        # confidence score
+        con = self.lr.cls.decision_function(vec)
+        ex, flag = self.ip.get_explanation(vec)
+
+
+        res = dict()
+        # 'label', 'probability', 'confidence', 'flag', 'explanation'
+        res['label'] = pre
+        res['probability'] = pro
+        res['confidence'] = con[0]
+        res['flag'] = flag
+
         # todo: sometimes contains duplicated words, e.g. "it's not good enough". return ['not', 'not good'].
         if pre == 1:
-            return (pre, ex['valued_pos'])
+            res['explanation'] = ex['valued_pos']
         else:
-            return (pre, ex['valued_neg'])
+            res['explanation'] = ex['valued_neg']
+        return json.dumps(res)
 
     def exposed_test(self, t = None):
         if t is not None:
