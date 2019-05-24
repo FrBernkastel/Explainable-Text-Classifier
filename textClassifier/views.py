@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 import rpyc
 
@@ -14,21 +14,37 @@ def index(request):
     return render(request,'classifier/index.html', context)
 
 
-
 def predict(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")
     
-        label,ex = remote_predict(input_text)
+        label,prob,conf,flag,exp = remote_predict(input_text)
         
         pos_flag = label
         neg_flag = 1-pos_flag
 
-        message = "The label is {}, because it contains words like: {}".format("POS" if pos_flag == 1 else "NEG",ex)
+        if flag == False:
+            pos_flag = 0
+            neg_flag = 0
+        print(flag,pos_flag,neg_flag)
 
-        context = {"explanation": message,"pos_flag":pos_flag,"neg_flag":neg_flag}
-    
-    return render(request, 'classifier/index.html', context)
+        message = "The label is {}, because it contains words like: {}, the probability is: {} \
+        , the confidence is: {}, the flag is :{}".format("POS" if pos_flag == 1 else "NEG",exp, prob, conf, flag)
+
+        pos_prob = 0.5
+        neg_prob = 0.5
+        if pos_flag == 1:
+            pos_prob = (prob)*100
+            neg_prob = (1-prob)*100
+        else:
+            pos_prob = (1-prob)*100
+            neg_prob = (prob)*100
+
+        context = {"explanation": message,"pos_flag":pos_flag,"neg_flag":neg_flag,"input_text" : input_text,"pos_prob":pos_prob,"neg_prob":neg_prob}
+        return JsonResponse(context, safe=False)
+    else:
+        context = {"pos_flag":1,"neg_flag":0, "explanation": "This text is negative because of too many negative words."}
+        return render(request,'classifier/index.html', context)
 
 
 def remote_predict(text):
@@ -38,12 +54,18 @@ def remote_predict(text):
         
         with rpyc.connect(HOST, PORT) as conn:
             #text = "I love the dog, and the world, and, everything"
-            t,ex = conn.root.predict(text)
-            ex = list(ex)
-            print(type(t),type(ex))
-            print(t,ex)
-        
-            return t,ex
+            res_json = conn.root.predict(text)
+            import json
+            res = json.loads(res_json)
+            print(res)
+            #'label', 'probability', 'confidence', 'flag', 'explanation'
+            label = res['label']
+            prob = res['probability']
+            conf = res['confidence']
+            flag = res['flag']
+            exp = res['explanation']
+            
+            return label,prob,conf,flag,exp
 
     except Exception as e:
         raise e

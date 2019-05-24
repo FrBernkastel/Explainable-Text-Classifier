@@ -81,29 +81,27 @@
 
       <div class="row">
         <div class = "col-sm-6">
-          <form id="textForm" action="{% url 'classifier:predict' %}" method="post">
-            {% csrf_token %}
             <div class="input-group input-group-lg shadow">
               <div class="input-group-prepend">
                 <span class="input-group-text bg-dark text-white">Input</span>
               </div>
+                {% csrf_token %}
               <textarea onKeyPress="return charLimit(this)" placeholder="{{ result }}" onKeyUp="return characterCount(this)"  rows="8" class="form-control" aria-label="With textarea" id="input_text" name = "input_text"></textarea>
-
+              
             </div>
             <p class="text-right text-black-50"><strong><span id="charCount">1000</span></strong> more characters available.</p>        
             <div class="row p-sm-3">
               <div class="col-sm-6 text-left ">
-                <button type="submit" class="btn btn-dark btn-block">Predict</button>
+                <button type="button" onclick="submitText();" class="btn btn-dark btn-block">Predict</button>
               </div>
               <div class="col-sm-6 text-right">
                 <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>      
               </div>
             </div>
-          </form>
         </div>
-
+        
         <div class = "col-sm-6">
-          <div class = "row">
+          <div class = "row mb-sm-4">
               <div class = "col-sm-6 list-group-item" id = "pos_paragraph">
                 <p hidden="hidden"> {{ pos_flag }} </p>
                 <p>It is a positive review :)</p>
@@ -114,12 +112,29 @@
                 <p>It's a negative review :(</p>              
               </div>
           </div>
+        
+          <!--<div id="chartContainer" style="height: 100px; width: 100%;"></div> -->
+          <div class="row">
+            <div class = "col-sm-1 align-items-center">
+              POS
+            </div>
+            
+            <div class = "col-sm-11">
+              <div class="progress pt-sm-10">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 50%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>              
+            </div>
+          
+          </div>
+
+
           <p class="text-left pt-sm-4">
             <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Explanation
             </a>
-            <div class="collapse" id="collapseExample">
-              <div class="card card-body">
+            <div class="collapse.show" id="collapseExample">
+              <div class="card card-body" id = "explanation">
                 {{ explanation }}
               </div>
             </div>
@@ -141,24 +156,42 @@
   </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"  crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
 
- $(function(){
+$('body').on("keydown", "#input_text",function(e) {
+    if (e.which == 13) {
+      submitText();
+    }
+});
+
+
+function drawResult() {
     var pos_flag = $("#pos_paragraph").children(":first").text();
     var neg_flag = $("#neg_paragraph").children(":first").text();
     if (pos_flag == 1) {
       $("#pos_paragraph").addClass("bg-success");
       $("#pos_paragraph").addClass("text-white");
-    } else {
+      $("#neg_paragraph").removeClass("bg-danger");
+      $("#neg_paragraph").removeClass("text-white");
+    } else if (neg_flag == 1) {
       $("#neg_paragraph").addClass("bg-danger");
       $("#neg_paragraph").addClass("text-white");
+      $("#pos_paragraph").removeClass("bg-success");
+      $("#pos_paragraph").removeClass("text-white");
+    } else {
+      $("#pos_paragraph").removeClass("bg-success");
+      $("#pos_paragraph").removeClass("text-white");      
+      $("#neg_paragraph").removeClass("bg-danger");
+      $("#neg_paragraph").removeClass("text-white");
     }
-  
- });
+}
+ 
 
 $('#input_text').each(function () {
   this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
@@ -166,6 +199,7 @@ $('#input_text').each(function () {
   this.style.height = 'auto';
   this.style.height = (this.scrollHeight) + 'px';
 });
+
 
 var maxLength=1000;
 function charLimit(el) {
@@ -184,10 +218,80 @@ function clearText(el) {
   characterCount(el);
 }
 
-function transfer() {
 
+function submitText() {
+  var text = $('#input_text').val();
+
+  $.ajax({
+    type: "POST",
+    url: "{% url 'classifier:predict' %}",
+    data: {"input_text":text},    
+    dataType: "json",  
+    success: function (data) {
+      console.log('Submission was successful.');
+      $('#explanation').text(data["explanation"]);
+      $("#pos_paragraph").children(":first").text(data["pos_flag"]);
+      $("#neg_paragraph").children(":first").text(data["neg_flag"]);
+      console.log(data["input_text"]);
+      $("#input_text").val(data["input_text"]);   
+      var pos_prob = data["pos_prob"];
+      var neg_prob = data["neg_prob"];
+      //var chart = $("#chartContainer").CanvasJSChart();
+      //chart.options.data[0].dataPoints[0].y = pos_prob;
+      //chart.options.data[0].dataPoints[1].y = neg_prob; 
+      //chart.options.data[0].dataPoints[0].label = pos_prob.toString() + "%";
+      //chart.options.data[0].dataPoints[1].label = neg_prob + "%"; 
+      //chart.render();
+      drawResult();
+
+     
+    },
+    error: function (data) {
+      console.log('An error occurred.');
+      console.log(data);
+    },  
+  });  
 }
 
+$(document).ready(function () {
+
+//Better to construct options first and then pass it as a parameter
+var options = {
+  animationEnabled: true,
+  title: {
+    text: "Probability",                
+    fontColor: "Peru"
+  },  
+  axisY: {
+    tickThickness: 0,
+    lineThickness: 0,
+    valueFormatString: " ",
+    gridThickness: 0                    
+  },
+  axisX: {
+    tickThickness: 0,
+    lineThickness: 0,
+    labelFontSize: 18,
+    labelFontColor: "Peru"        
+  },
+  data: [{
+    indexLabelFontSize: 13,
+    toolTipContent: "<span style=\"color:#62C9C3\">{indexLabel}:</span> <span style=\"color:#CD853F\"><strong>{y}</strong></span>",
+    indexLabelPlacement: "inside",
+    indexLabelFontColor: "white",
+    indexLabelFontWeight: 600,
+    indexLabelFontFamily: "Verdana",
+    color: "#62C9C3",
+    type: "bar",
+    dataPoints: [
+      { y: 50, label: "50%", indexLabel: "Pos" },
+      { y: 50, label: "50%", indexLabel: "Neg" },
+    ]
+  }]
+};
+  var chart = new CanvasJS.Chart("chartContainer",options);
+  chart.render();
+});
 
 </script>
 
