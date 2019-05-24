@@ -1,6 +1,27 @@
 # Explainable-Text-Classifier
 Explainable Text Classifier @ Web Application 
 
+# How to run the application
+##### Machine Learning Server
+* `cd ./classifierModel`
+* `python server.py`
+
+It will launch the ML server, providing PA2's classification task API for Django backend.
+
+##### Django Web Server
+in the root directory:
+* `python manager.py runserver`
+
+This command will launch the Django Web Server at localhost:8000. Type the url `http://localhost:8000/classifier` to use the web application. **Every time you edit the .html or .py, you don't have to restart the webserver.**
+
+##### Spread the web application to the LAN
+`ifconfig` - It will show your ipv4 IP. Then, edit the file *ExplainAny/settings.py* and uncomment `ALLOWED_HOSTS = ['100.81.39.76']`. Fill your IP into the `string` field. Then, use the following command the lanuch the web server:
+
+`python manager.py runserver 0.0.0.0:8000`
+
+Finally, type `<your IP address>:8000/classifier` to visit the website.
+
+
 # Current Progress 
 ### 5/20/2019
 1. Django: 40%
