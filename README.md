@@ -32,7 +32,16 @@ Finally, type `<your IP address>:8000/classifier` to visit the website.
 ### 5/20/2019
 1. Django: 40%
 2. Task1: 50%
-3. Task0: 0%
+3. Task2: 0%
+
+### 5/24/2019
+1. Django: 60%
+* Add the progress-bar, with dynamic adjustation.
+* Replace Form submit with Ajax async submit.
+
+2. Task1: 50%
+3. Task2: 5%
+* Research on an existing code.
 
 # Git cheatsheet
 ### How to acquire a repository - git clone
