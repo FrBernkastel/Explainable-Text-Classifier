@@ -21,6 +21,8 @@ class PredictServer(rpyc.Service):
     def __init__(self, interpreter):
         if not os.path.isfile('classifier.backup'):
             self.lr = cf.LogisRegression()
+            with open('classifier.backup', 'wb') as backup_file:
+                pickle.dump(self.lr, backup_file)
         else:
             with open('classifier.backup', 'rb') as backup_file:
                 self.lr = pickle.load( backup_file)
