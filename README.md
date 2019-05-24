@@ -5,7 +5,7 @@ Bootstrap:
 * (Component) https://getbootstrap.com/docs/4.3/components/alerts/
 * (Utility)   https://getbootstrap.com/docs/4.3/utilities/borders/
            
-JQuery: https://www.w3schools.com/jquery/default.asp .**Selector** and **Traverse** parts are very helpful for you to find a HTML Element.
+JQuery: https://www.w3schools.com/jquery/default.asp .**Selector** and **Traverse** parts are very helpful for you to find a HTML element.
 
 # How to run the application
 ##### Machine Learning Server
