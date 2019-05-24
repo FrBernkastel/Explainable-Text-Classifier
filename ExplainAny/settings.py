@@ -120,4 +120,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ALLOWED_HOSTS = ['100.81.39.76']
+#ALLOWED_HOSTS = ['100.81.39.76']
