@@ -4,7 +4,7 @@ from . import views
 app_name = "classifier"
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('predict/', views.predict, name = 'predict')
-
+    path('', views.review, name='review'),
+    path('news/', views.news, name="news"),
+    path('predict/', views.predict, name = 'predict'),    
 ]
