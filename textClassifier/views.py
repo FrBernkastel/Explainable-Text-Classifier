@@ -8,11 +8,14 @@ import rpyc
 #from textClassifier1 import model
 
 # Create your views here.
-# Create your views here.
-def index(request):
+def review(request):
     context = {"pos_flag":1,"neg_flag":0, "explanation": "This text is negative because of too many negative words."}
-    return render(request,'classifier/index.html', context)
+    return render(request,'classifier/review.html', context)
 
+
+def news(request):
+    context = {"pos_flag":1,"neg_flag":0, "explanation": "This text is negative because of too many negative words."}
+    return render(request,'classifier/news.html', context)
 
 def predict(request):
     if request.method == 'POST':
@@ -30,7 +33,7 @@ def predict(request):
 
         message = "The label is {}, because it contains words like: {}, the probability is: {} \
         , the confidence is: {}, the flag is :{}".format("POS" if pos_flag == 1 else "NEG",exp, prob, conf, flag)
-        
+
         pos_prob = 0.5
         neg_prob = 0.5
         if pos_flag == 1:
