@@ -16,7 +16,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
     <style>
       .bd-placeholder-img {
@@ -42,35 +42,34 @@
 <body data-gr-c-s-loaded="true">
 
 <header>
-  <div class="bg-dark collapse" id="navbarHeader" style="">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-md-7 py-4">
-          <h4 class="text-white">About</h4>
-          <p class="text-muted">The web application is a supreme present to the course CSE256 - Statistical Natural Language Processing. Life should be convenient. We create this application for either  course credits or the human beings. </p>
-        </div>
-        <div class="col-sm-4 offset-md-1 py-4">
-          <h4 class="text-white">Contact</h4>
-          <ul class="list-unstyled">
-            <li><a href="https://www.linkedin.com/in/yancen-pan-697b83143/" class="text-white">Yancen Pan (y8pan@ucsd.edu)</a></li>
-            <li><a href="https://getbootstrap.com/docs/4.3/examples/album/#" class="text-white">Qian Wang</a></li>
-            <li><a href="https://getbootstrap.com/docs/4.3/examples/album/#" class="text-white">Kaichen Liu</a></li>
-          </ul>
-        </div>
-      </div>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      <strong>Explain Anything</strong>      
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample04">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">Restaurant</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">News</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="http://example.com/" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown04">
+            <a class="dropdown-item" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">Action</a>
+            <a class="dropdown-item" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">Another action</a>
+            <a class="dropdown-item" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">Something else here</a>
+          </div>
+        </li>
+      </ul>
     </div>
-  </div>
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container d-flex justify-content-between">
-      <a href="https://getbootstrap.com/docs/4.3/examples/album/#" class="navbar-brand d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-        <strong>Explain Anything</strong>
-      </a>
-      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </div>
+  </nav>
 </header>
 
 <main role="main" class = "bd-content shadow-lg" >
@@ -89,7 +88,7 @@
               <textarea onKeyPress="return charLimit(this)" placeholder="{{ result }}" onKeyUp="return characterCount(this)"  rows="8" class="form-control" aria-label="With textarea" id="input_text" name = "input_text"></textarea>
               
             </div>
-            <p class="text-right text-black-50"><strong><span id="charCount">1000</span></strong> more characters available.</p>        
+            <p class="text-right text-black-50"><strong><span id="charCount">100</span></strong> more characters available.</p>        
             <div class="row p-sm-3">
               <div class="col-sm-6 text-left ">
                 <button type="button" onclick="submitText();" class="btn btn-dark btn-block">Predict</button>
@@ -102,25 +101,25 @@
           
         <div class = "col-sm-6">
           <div class = "row mb-sm-2">
-              <div class = "col-sm-6 list-group-item" id = "pos_paragraph">
+              <div class = "col-sm-6 px-sm-1 rounded-1" id = "pos_paragraph">
                 <p hidden="hidden"> {{ pos_flag }} </p>
-                <p>It is a positive review :)</p>
+                <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="top" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a positive review :)</a>
               </div>
 
-              <div class = "col-sm-6 list-group-item" id = "neg_paragraph"> 
+              <div class = "col-sm-6 px-sm-1 rounded-1" id = "neg_paragraph"> 
                 <p hidden="hidden"> {{ neg_flag }} </p>
-                <p>It's a negative review :(</p>              
+                <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="right" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a negative review :)</a>         
               </div>
           </div>
 
         
           <!--<div id="chartContainer" style="height: 100px; width: 100%;"></div> -->
 
-          <div class="row progress align-center">
+          <div class="row progress align-center mb-sm-2">
             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 50%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" id = "pos_bar"></div>
             <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 50%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" id = "neg_bar"></div>
           </div> 
-  
+
           <p class="pt-sm-4 text-left">
             <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Explanation
@@ -130,8 +129,43 @@
                 {{ explanation }}
               </div>
             </div>
-
           </p>
+          
+          <div class="row"> 
+            <div class="col-sm-6">
+              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-conclusion">
+                <div class="toast-header">
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
+                  <strong class="mr-auto">Conclusion</strong>
+                  <small>11 mins ago</small>
+                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="toast-body">
+                 
+                </div>
+              </div>              
+            </div>
+            <div class="col-sm-6">
+              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-confidence">
+                <div class="toast-header">
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
+                  <strong class="mr-auto">Bootstrap</strong>
+                  <small>11 mins ago</small>
+                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="toast-body">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+  
+
 
 
 
@@ -160,6 +194,15 @@
 
 <script>
 
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+
+$('.popover-dismiss').popover({
+  trigger: 'focus'
+})
+
+
 $('body').on("keydown", "#input_text",function(e) {
     if (e.which == 13) {
       submitText();
@@ -171,20 +214,20 @@ function drawResult() {
     var pos_flag = $("#pos_paragraph").children(":first").text();
     var neg_flag = $("#neg_paragraph").children(":first").text();
     if (pos_flag == 1) {
-      $("#pos_paragraph").addClass("bg-success");
-      $("#pos_paragraph").addClass("text-white");
-      $("#neg_paragraph").removeClass("bg-danger");
-      $("#neg_paragraph").removeClass("text-white");
+      $("#pos_paragraph a").addClass("bg-success text-white");
+      $("#pos_paragraph a").removeClass("btn-outline-dark");
+      $("#neg_paragraph a").removeClass("bg-danger text-white");
+      $("#neg_paragraph a").addClass("btn-outline-dark");
     } else if (neg_flag == 1) {
-      $("#neg_paragraph").addClass("bg-danger");
-      $("#neg_paragraph").addClass("text-white");
-      $("#pos_paragraph").removeClass("bg-success");
-      $("#pos_paragraph").removeClass("text-white");
+      $("#neg_paragraph a").addClass("bg-danger text-white");
+      $("#neg_paragraph a").removeClass("btn-outline-dark");
+      $("#pos_paragraph a").removeClass("bg-success text-white");
+      $("#pos_paragraph a").addClass("btn-outline-dark");
     } else {
-      $("#pos_paragraph").removeClass("bg-success");
-      $("#pos_paragraph").removeClass("text-white");      
-      $("#neg_paragraph").removeClass("bg-danger");
-      $("#neg_paragraph").removeClass("text-white");
+      $("#pos_paragraph a").removeClass("bg-success text-white");
+      $("#pos_paragraph a").addClass("btn-outline-dark");      
+      $("#neg_paragraph a").removeClass("bg-danger text-white");
+      $("#neg_paragraph a").addClass("btn-outline-dark");
     }
 }
  
@@ -197,7 +240,7 @@ $('#input_text').each(function () {
 });
 
 
-var maxLength=1000;
+var maxLength=140;
 function charLimit(el) {
     if (el.value.length > maxLength) return false;
     return true;
@@ -215,6 +258,48 @@ function clearText(el) {
 }
 
 
+//utility functions for submission
+function switchResult(data) {
+  $("#pos_paragraph").children(":first").text(data["pos_flag"]);
+  $("#neg_paragraph").children(":first").text(data["neg_flag"]);
+}
+
+function fillbackTextArea(data) {
+  $("#input_text").val(data["input_text"]);   
+}
+
+function computeProb(data) {
+      var pos_prob = data["pos_prob"].toFixed(2);
+      var neg_prob = data["neg_prob"].toFixed(2);
+      percent_pos = pos_prob.toString() + "%";
+      percent_neg = neg_prob.toString() + "%";
+      $("#pos_bar").css("width",percent_pos);
+      $("#neg_bar").css("width",percent_neg);  
+      $("#pos_paragraph a").attr("data-content",percent_pos);
+      $("#neg_paragraph a").attr("data-content",percent_neg);  
+      $("#pos_paragraph a").popover("show");
+      $("#neg_paragraph a").popover("show");  
+}
+
+function procConclusionToast(data) {
+  var pos_flag = data["pos_flag"];
+  var neg_flag = data["neg_flag"];
+  var res = "";
+  if (pos_flag==0 && neg_flag==0) {
+      res = "Neutral";
+  } else if (pos_flag == 1) {
+      res = "Positive";
+  } else {
+      res = "Negative";
+  }
+
+  var res_sent = "The review is %res%.".replace("%res%",res);
+  console.log(res_sent);
+  $("#toast-conclusion .toast-body").text(res_sent);
+  $("#toast-conclusion").toast("show");
+}
+
+//submission code
 function submitText() {
   var text = $('#input_text').val();
 
@@ -225,23 +310,13 @@ function submitText() {
     dataType: "json",  
     success: function (data) {
       console.log('Submission was successful.');
-      $('#explanation').text(data["explanation"]);
-      $("#pos_paragraph").children(":first").text(data["pos_flag"]);
-      $("#neg_paragraph").children(":first").text(data["neg_flag"]);
-      console.log(data["input_text"]);
-      $("#input_text").val(data["input_text"]);   
-      var pos_prob = data["pos_prob"];
-      var neg_prob = data["neg_prob"];
-      //var chart = $("#chartContainer").CanvasJSChart();
-      //chart.options.data[0].dataPoints[0].y = pos_prob;
-      //chart.options.data[0].dataPoints[1].y = neg_prob; 
-      //chart.options.data[0].dataPoints[0].label = pos_prob.toString() + "%";
-      //chart.options.data[0].dataPoints[1].label = neg_prob + "%"; 
-      //chart.render();
-      percent_pos = pos_prob.toString() + "%";
-      percent_neg = neg_prob.toString() + "%";
-      $("#pos_bar").css("width",percent_pos);
-      $("#neg_bar").css("width",percent_neg);      
+      console.log(data["input_text"]);      
+      $('#explanation').text(data["explanation"]); //experimental
+      switchResult(data);
+      fillbackTextArea(data);
+      computeProb(data);
+
+      procConclusionToast(data);
       drawResult();
 
      
