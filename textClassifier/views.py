@@ -30,7 +30,7 @@ def predict(request):
 
         message = "The label is {}, because it contains words like: {}, the probability is: {} \
         , the confidence is: {}, the flag is :{}".format("POS" if pos_flag == 1 else "NEG",exp, prob, conf, flag)
-
+        
         pos_prob = 0.5
         neg_prob = 0.5
         if pos_flag == 1:
