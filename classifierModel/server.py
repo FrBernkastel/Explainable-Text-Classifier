@@ -19,6 +19,7 @@ class PredictServer(rpyc.Service):
     """
 
     def __init__(self, interpreter):
+
         if not os.path.isfile('classifier.backup'):
             self.lr = cf.LogisRegression()
             with open('classifier.backup', 'wb') as backup_file:
@@ -28,6 +29,48 @@ class PredictServer(rpyc.Service):
                 self.lr = pickle.load( backup_file)
             print("finished")
         self.ip = interpreter(self.lr)
+
+    def exposed_predict_news(self, text):
+        """
+
+        :param text: the target text
+        :return: (prediction, a list of important words)
+        """
+        try:
+            assert type(text) == str, "not valid input"
+        except:
+            pass
+        res = dict()
+        res['topk_labels'] = ['SPORTS', 'FIFTY', 'HEALTHY LIVING', 'POLITICS', 'ENTERTAINMENT']
+        res['topk_prob'] = [0.4, 0.3, 0.2, 0.05, 0.05]
+        res['topk_labels_prob'] = [('SPORTS', 0.03528977019242901),\
+                     ('FIFTY', 0.04950928969548888),\
+                      ('HEALTHY LIVING', 0.0770822639575894),\
+                       ('POLITICS', 0.09133677266006603),\
+                        ('ENTERTAINMENT', 0.34307359857285236)]
+        res['topk_labels__feature_coef'] =  {'SPORTS': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)],\
+                                            'FIFTY': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)],\
+                                            'HEALTHY LIVING': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)],\
+                                            'POLITICS': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)],\
+                                            'ENTERTAINMENT': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)],\
+                                            }
+
+        #  [
+        #     ['SPORTS', ('curry', 0.5), ('james', 0.3), ('soccer', 0.3)]
+        #     ['FIFTY', ('curry', 0.5), ('james', 0.3), ('soccer', 0.3)]
+        #     ['HEALTHY LIVING', ('curry', 0.5), ('james', 0.3), ('soccer', 0.3)]
+        #     ['POLITICS', ('curry', 0.5), ('james', 0.3), ('soccer', 0.3)]
+        #     ['ENTERTAINMENT', ('curry', 0.5), ('james', 0.3), ('soccer', 0.3)]     
+        # ]
+
+        # res['label'] = [1,2,3]
+        # res['probability'] = [2,3,4]
+        # res['confidence'] = [222]
+        # res['flag'] = flag
+
+        return json.dump(res) 
+
+
 
     def exposed_predict(self, text):
         """
