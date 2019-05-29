@@ -81,3 +81,6 @@ Imagine you are in version 4 repository. Someone has already commit a version 5 
 ##### Deal with conflicits
 * `git checkout <branch-name>` If you make any change to the newest version, you must *commit your version*, before switch to another branch. Otherwise, you can use `git stash` to push your version into a *stack*, recover to the unchanged code, and `git pop` to pop the version from the *stack* when returning back to this branch.
 * `git merge <branch-name>` Very similar as *conflict when commit*. But,it is very friendly when *conflict when merge*. The git will merge as many as files it can, and mark all conflicts needed to resolve. So you delete the choice you don't want to keep and commit the change again.
+* `git clean -d -f` 
+* `git stash save --keep-index` If you want remove all local changes from your working copy, simply stash them.
+* `git stash drop` If you don't need them anymore, you now can drop that stash

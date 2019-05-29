@@ -75,8 +75,8 @@
 <main role="main" class = "bd-content shadow-lg" >
   <section class="jumbotron text-center">
     <div class="container">
-      <h1 class="jumbotron-heading">Judge your Review</h1>
-      <p class="lead text-muted">Review the review, give your product a better review.</p>
+      <h1 class="jumbotron-heading">Categorize the News</h1>
+      <p class="lead text-muted">Given the headline, find the categories of your news.</p>
 
       <div class="row">
         <div class = "col-sm-6">
@@ -100,25 +100,16 @@
         </div>
           
         <div class = "col-sm-6">
-          <div class = "row mb-sm-2">
-              <div class = "col-sm-6 px-sm-1 rounded-1" id = "pos_paragraph">
-                <p hidden="hidden"> {{ pos_flag }} </p>
-                <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="top" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a positive review :)</a>
-              </div>
 
-              <div class = "col-sm-6 px-sm-1 rounded-1" id = "neg_paragraph"> 
-                <p hidden="hidden"> {{ neg_flag }} </p>
-                <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="right" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a negative review :)</a>         
-              </div>
+
+          <div class = "w-auto text-left" style = "font-size:120%"  id = "label-container">
+              <span class="badge badge-primary" hidden="hidden" > {{ label1 }}</span>
+              <span class="badge badge-warning" hidden="hidden">{{ label2 }} </span>
+              <span class="badge badge-success" hidden="hidden">{{ label3 }} </span>
+              <span class="badge badge-danger" hidden="hidden">{{ label4 }} </span>
+              <span class="badge badge-dark" hidden="hidden">{{ label5 }} </span>
           </div>
 
-        
-          <!--<div id="chartContainer" style="height: 100px; width: 100%;"></div> -->
-
-          <div class="row progress align-center mb-sm-2">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 50%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" id = "pos_bar"></div>
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 50%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" id = "neg_bar"></div>
-          </div> 
 
           <p class="pt-sm-4 text-left">
             <a class="btn btn-outline-dark" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -158,22 +149,33 @@
                   </button>
                 </div>
                 <div class="toast-body">
-                  
                 </div>
               </div>
             </div>
           </div>
 
-  
-
-
-
+          <div class="row">
+              <div class="col-sm-6">
+              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-chart">
+                <div class="toast-header">
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
+                  <strong class="mr-auto">Bootstrap</strong>
+                  <small>11 mins ago</small>
+                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="toast-body">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
     </div>
   </section>
-
 
 </main>
 
@@ -191,6 +193,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"  crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
 <script>
 
@@ -211,24 +214,7 @@ $('body').on("keydown", "#input_text",function(e) {
 
 
 function drawResult() {
-    var pos_flag = $("#pos_paragraph").children(":first").text();
-    var neg_flag = $("#neg_paragraph").children(":first").text();
-    if (pos_flag == 1) {
-      $("#pos_paragraph a").addClass("bg-success text-white");
-      $("#pos_paragraph a").removeClass("btn-outline-dark");
-      $("#neg_paragraph a").removeClass("bg-danger text-white");
-      $("#neg_paragraph a").addClass("btn-outline-dark");
-    } else if (neg_flag == 1) {
-      $("#neg_paragraph a").addClass("bg-danger text-white");
-      $("#neg_paragraph a").removeClass("btn-outline-dark");
-      $("#pos_paragraph a").removeClass("bg-success text-white");
-      $("#pos_paragraph a").addClass("btn-outline-dark");
-    } else {
-      $("#pos_paragraph a").removeClass("bg-success text-white");
-      $("#pos_paragraph a").addClass("btn-outline-dark");      
-      $("#neg_paragraph a").removeClass("bg-danger text-white");
-      $("#neg_paragraph a").addClass("btn-outline-dark");
-    }
+
 }
  
 
@@ -299,6 +285,29 @@ function procConclusionToast(data) {
   $("#toast-conclusion").toast("show");
 }
 
+data11 = {
+    datasets: [{
+        data: [10, 20, 30]
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        'Red',
+        'Yellow',
+        'Blue'
+    ]
+};
+
+function procDoughnutChartsToast(data) {
+    var ctx =$('#myChart');
+    var myDoughnutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: data11,
+        {#options: options#}
+    });
+    $('#toast-chart').toast("show");
+}
+
 //submission code
 function submitText() {
   var text = $('#input_text').val();
@@ -317,6 +326,7 @@ function submitText() {
       computeProb(data);
 
       procConclusionToast(data);
+      procDoughnutChartsToast(data);
       drawResult();
 
      
