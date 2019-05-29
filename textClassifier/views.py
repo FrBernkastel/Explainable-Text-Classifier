@@ -21,7 +21,7 @@ def predict(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")
     
-        label,prob,conf,flag,exp = remote_predict(input_text)
+        label,prob,conf,flag,exp_words = remote_predict(input_text)
         
         pos_flag = label
         neg_flag = 1-pos_flag
@@ -32,18 +32,20 @@ def predict(request):
         print(flag,pos_flag,neg_flag)
 
         message = "The label is {}, because it contains words like: {}, the probability is: {} \
-        , the confidence is: {}, the flag is :{}".format("POS" if pos_flag == 1 else "NEG",exp, prob, conf, flag)
-
+        , the confidence is: {}, the flag is :{}".format("POS" if pos_flag == 1 else "NEG",exp_words, prob, conf, flag)
+        print(message)
         pos_prob = 0.5
         neg_prob = 0.5
         if pos_flag == 1:
             pos_prob = (prob)*100
-            neg_prob = (1-prob)*100
+            neg_prob = (1-prob)*100 
         else:
             pos_prob = (1-prob)*100
             neg_prob = (prob)*100
 
-        context = {"explanation": message,"pos_flag":pos_flag,"neg_flag":neg_flag,"input_text" : input_text,"pos_prob":pos_prob,"neg_prob":neg_prob}
+        context = {"explanation": message,"pos_flag":pos_flag,"neg_flag":neg_flag,\
+                   "input_text" : input_text,"pos_prob":pos_prob,"neg_prob":neg_prob, \
+                   "exp_words":exp_words}
         return JsonResponse(context, safe=False)
     else:
         context = {"pos_flag":1,"neg_flag":0, "explanation": "This text is negative because of too many negative words."}
@@ -72,3 +74,4 @@ def remote_predict(text):
 
     except Exception as e:
         raise e
+
