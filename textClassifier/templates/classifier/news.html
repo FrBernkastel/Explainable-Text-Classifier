@@ -76,7 +76,7 @@
   <section class="jumbotron text-center">
     <div class="container">
       <h1 class="jumbotron-heading">Categorize the News</h1>
-      <p class="lead text-muted">Given the headline, find the categories of your news.</p>
+      <p class="lead text-muted">Give the headline, find the categories of your news.</p>
 
       <div class="row">
         <div class = "col-sm-6">
@@ -318,30 +318,35 @@ function procPieChartsToast(data) {
 }
 
 //submission code
-function submitText() {
-  var text = $('#input_text').val();
+function submitText(){
+  if ($("#input_text").val().length == 0) {
+      {#alert("Put some news headline here.");#}
+  }
+  else {
+      var text = $('#input_text').val();
 
-  $.ajax({
-    type: "POST",
-    url: "{% url 'classifier:predict_news' %}",
-    data: {"input_text":text},    
-    dataType: "json",  
-    success: function (data) {
-      console.log('Submission was successful.');
-      console.log(data["input_text"]);      
-      $('#explanation').text(data["explanation"]); //experimental
-      fillbackTextArea(data);
+      $.ajax({
+        type: "POST",
+        url: "{% url 'classifier:predict_news' %}",
+        data: {"input_text":text},
+        dataType: "json",
+        success: function (data) {
+          console.log('Submission was successful.');
+          console.log(data["input_text"]);
+          $('#explanation').text(data["explanation"]); //experimental
+          fillbackTextArea(data);
 
-      drawResult(data);
-      procConclusionToast(data);
-      procPieChartsToast(data);
-     
-    },
-    error: function (data) {
-      console.log('An error occurred.');
-      console.log(data);
-    },  
-  });  
+          drawResult(data);
+          procConclusionToast(data);
+          procPieChartsToast(data);
+
+        },
+        error: function (data) {
+          console.log('An error occurred.');
+          console.log(data);
+        },
+      });
+  }
 }
 
 
