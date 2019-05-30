@@ -3,6 +3,7 @@
 # %%
 import rpyc
 import classifier as cf
+import second_classifier as cf2
 import interpreter as ip
 import json
 import os
@@ -19,6 +20,7 @@ class PredictServer(rpyc.Service):
     """
 
     def __init__(self, interpreter):
+
         if not os.path.isfile('classifier.backup'):
             self.lr = cf.LogisRegression()
             with open('classifier.backup', 'wb') as backup_file:
@@ -26,12 +28,21 @@ class PredictServer(rpyc.Service):
         else:
             with open('classifier.backup', 'rb') as backup_file:
                 self.lr = pickle.load( backup_file)
-            print("finished")
+        print("lr finished")
+
+        if not os.path.isfile('second_classifier.backup'):
+            self.lr2 = cf2.LogisRegression()
+            with open('second_classifier.backup', 'wb') as backup_file:
+                pickle.dump(self.lr2, backup_file)
+        else:
+            with open('second_classifier.backup', 'rb') as backup_file:
+                self.lr2 = pickle.load( backup_file)
+        print("lr2 finished")
+
         self.ip = interpreter(self.lr)
 
     def exposed_predict(self, text):
         """
-
         :param text: the target text
         :return: (prediction, a list of important words)
         """
@@ -63,7 +74,26 @@ class PredictServer(rpyc.Service):
             res['explanation'] = ex['valued_neg']
         return json.dumps(res)
 
+    def exposed_predict_news(self, text):
+        """
+        :param text: the target text
+        :return: (prediction, a list of important words)
+        """
+        try:
+            assert type(text) == str, "not valid input"
+        except:
+            pass
 
+        res = self.lr2.predict_topk(text, 5)
+
+
+        # res['labels_prob'] = [('SPORTS', 0.03528977019242901) * 31] #acsending sort
+        # res['topk_label_proba'] =  [('SPORTS', 0.03528977019242901) * 5] #acsending sort
+
+        # res['label__feat_coef'] =  {'SPORTS': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)] * 31  } #order by label name
+
+
+        return json.dumps(res)
 
     def exposed_test(self, t = None):
         if t is not None:

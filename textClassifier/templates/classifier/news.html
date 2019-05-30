@@ -155,8 +155,8 @@
           </div>
 
           <div class="row">
-              <div class="col-sm-6">
-              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-chart">
+            <div class="col-sm-auto">
+              <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-chart">
                 <div class="toast-header">
                 <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
                   <strong class="mr-auto">Bootstrap</strong>
@@ -166,7 +166,7 @@
                   </button>
                 </div>
                 <div class="toast-body">
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <canvas id="myChart" width="1200" height="600"></canvas>
                 </div>
               </div>
             </div>
@@ -287,23 +287,57 @@ function procConclusionToast(data) {
 
 data11 = {
     datasets: [{
-        data: [10, 20, 30]
+        data: [1,2,3,4,5,
+        1,2,3,4,5,
+        1,2,3,4,5,
+        1,2,3,4,5,
+        1,2,3,4,5,6,
+        1,2,3,4,5,],
+        backgroundColor:
+            ['rgba(255,0,0,1)', 'rgba(255,99,71,1)', 'rgba(255,127,80,1)', 'rgba(250,128,114,1)', 'rgba(255,165,0,1)',
+            'rgba(255,215,0,1)', 'rgba(218,165,32,1)', 'rgba(189,183,107,1)', 'rgba(128,128,0,1)', 'rgba(255,255,0,1)',
+            'rgba(154,205,50)', 'rgba(107,142,35)', 'rgba(127,255,0,1)', 'rgba(50,205,50,1)', 'rgba(152,251,152,1)',
+            'rgba(102,205,170,1)', 'rgba(0,255,255,1)', 'rgba(64,224,208,1)', 'rgba(175,238,238)', 'rgba(95,158,160,1)',
+            'rgba(100,149,237)', 'rgba(0,191,255)', 'rgba(135,206,235,1)', 'rgba(0,0,128,0.8)', 'rgba(65,105,225,1)', 'rgba(138,43,226,1)',
+            'rgba(106,90,205,1)', 'rgba(128,0,128,1)', 'rgba(219,112,147,1)', 'rgba(255,192,203,1)', 'rgba(210,105,30,1)',
+            {#"tomato", "dark salmon", "salmon", "dark orange",#}
+            {#"gold", "golden rod", "dark khaki", "olive", "yellow",#}
+            {#"yellow green", "olive drab", "chart reuse", "dark green", "sea green",#}
+            {#"medium aqua marine", "aqua", "turquoise", "pale turquoise", "cadet blue",#}
+            {#"corn flower blue", "deep sky blue", "sky blue", "navy", "royal blue", "blue violet",#}
+            {#"slate blue", "purple", "pale violet red", "pink", "saddle brown"#}
+        ]
     }],
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-        'Red',
-        'Yellow',
-        'Blue'
-    ]
+    labels: ['ARTS', 'ARTS & CULTURE', 'BLACK VOICES', 'BUSINESS', 'COLLEGE',
+       'COMEDY', 'CRIME', 'EDUCATION', 'ENTERTAINMENT', 'FIFTY',
+       'GOOD NEWS', 'GREEN', 'HEALTHY LIVING', 'IMPACT', 'LATINO VOICES',
+       'MEDIA', 'PARENTS', 'POLITICS', 'QUEER VOICES', 'RELIGION',
+       'SCIENCE', 'SPORTS', 'STYLE', 'TASTE', 'TECH', 'THE WORLDPOST',
+       'TRAVEL', 'WEIRD NEWS', 'WOMEN', 'WORLD NEWS', 'WORLDPOST'],
+
 };
 
-function procDoughnutChartsToast(data) {
+function procPieChartsToast(data) {
     var ctx =$('#myChart');
-    var myDoughnutChart = new Chart(ctx, {
+    var myPieChart = new Chart(ctx, {
         type: 'doughnut',
         data: data11,
-        {#options: options#}
+        options: {
+          {#responsive: false,#}
+          legend: {
+             display: false,
+             position: 'bottom',
+             fontSize: 3,
+             {#onClick: null#}
+          },
+          title: {
+            display: true,
+            text: 'Predicted probabilities of each category'
+          }
+        }
+
     });
     $('#toast-chart').toast("show");
 }
@@ -326,7 +360,7 @@ function submitText() {
       computeProb(data);
 
       procConclusionToast(data);
-      procDoughnutChartsToast(data);
+      procPieChartsToast(data);
       drawResult();
 
      
