@@ -6,5 +6,6 @@ app_name = "classifier"
 urlpatterns = [
     path('', views.review, name='review'),
     path('news/', views.news, name="news"),
-    path('predict/', views.predict, name = 'predict'),    
+    path('predict/', views.predict, name = 'predict'),
+    path('predict2/', views.predict_news, name = 'predict_news'),
 ]

@@ -17,6 +17,42 @@ def news(request):
     context = {"pos_flag":1,"neg_flag":0, "explanation": "This text is negative because of too many negative words."}
     return render(request,'classifier/news.html', context)
 
+def predict_news(request):
+    if request.method == 'POST':
+        input_text = request.POST.get("input_text")
+        # label_proba, prob, exp = remote_predict_news(input_text)
+        exp = ""
+        label_proba = [('SPORTS', 0.03528977019242901),('POLOTICS',0.02)]
+        prob = [0.3]*31
+        context = {"explanation": exp, "input_text": input_text,
+                   "labels": label_proba, "prob": prob}
+        return JsonResponse(context, safe=False)
+    else:
+        pass
+
+def remote_predict_news(text):
+    HOST = "localhost"  # Standard loopback interface address (localhost)
+    PORT = 8001  # Port to listen on (non-privileged ports are > 1023)
+    try:
+
+        with rpyc.connect(HOST, PORT) as conn:
+            # text = "I love the dog, and the world, and, everything"
+            res_json = conn.root.predict_news(text)
+            import json
+            res = json.loads(res_json)
+            print(res)
+            # 'label', 'probability', 'confidence', 'flag', 'explanation'
+            label = res['topk_label_proba']
+            prob = res['labels_prob']
+            exp = res['label__feat_coef']
+
+            return label, prob, exp
+
+    except Exception as e:
+        raise e
+
+
+
 def predict(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")

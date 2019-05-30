@@ -27,8 +27,8 @@ from sklearn.metrics import accuracy_score ,confusion_matrix
 
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
-import matplotlib.pyplot as plt
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 # %matplotlib inline 
 import warnings
 warnings.filterwarnings('ignore')

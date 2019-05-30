@@ -103,11 +103,11 @@
 
 
           <div class = "w-auto text-left" style = "font-size:120%"  id = "label-container">
-              <span class="badge badge-primary" hidden="hidden" > {{ label1 }}</span>
-              <span class="badge badge-warning" hidden="hidden">{{ label2 }} </span>
-              <span class="badge badge-success" hidden="hidden">{{ label3 }} </span>
-              <span class="badge badge-danger" hidden="hidden">{{ label4 }} </span>
-              <span class="badge badge-dark" hidden="hidden">{{ label5 }} </span>
+              <span class="badge badge-primary d-none"  id = "label0"> </span>
+              <span class="badge badge-warning d-none" id = "label1"> </span>
+              <span class="badge badge-success d-none"  id = "label2"> </span>
+              <span class="badge badge-danger d-none" id = "label3"> </span>
+              <span class="badge badge-dark d-none" id = "label4"> </span>
           </div>
 
 
@@ -213,11 +213,6 @@ $('body').on("keydown", "#input_text",function(e) {
 });
 
 
-function drawResult() {
-
-}
- 
-
 $('#input_text').each(function () {
   this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
 }).on('input', function () {
@@ -243,49 +238,28 @@ function clearText(el) {
   characterCount(el);
 }
 
-
-//utility functions for submission
-function switchResult(data) {
-  $("#pos_paragraph").children(":first").text(data["pos_flag"]);
-  $("#neg_paragraph").children(":first").text(data["neg_flag"]);
-}
-
 function fillbackTextArea(data) {
   $("#input_text").val(data["input_text"]);   
 }
 
-function computeProb(data) {
-      var pos_prob = data["pos_prob"].toFixed(2);
-      var neg_prob = data["neg_prob"].toFixed(2);
-      percent_pos = pos_prob.toString() + "%";
-      percent_neg = neg_prob.toString() + "%";
-      $("#pos_bar").css("width",percent_pos);
-      $("#neg_bar").css("width",percent_neg);  
-      $("#pos_paragraph a").attr("data-content",percent_pos);
-      $("#neg_paragraph a").attr("data-content",percent_neg);  
-      $("#pos_paragraph a").popover("show");
-      $("#neg_paragraph a").popover("show");  
+function drawResult(data) {
+    var labels = data['labels'];
+    $.each(labels, function(idx, l) {
+        var badge = $('#label'+idx);
+        badge.text(l[0]);
+        badge.removeClass('d-none');
+    });
 }
 
 function procConclusionToast(data) {
-  var pos_flag = data["pos_flag"];
-  var neg_flag = data["neg_flag"];
-  var res = "";
-  if (pos_flag==0 && neg_flag==0) {
-      res = "Neutral";
-  } else if (pos_flag == 1) {
-      res = "Positive";
-  } else {
-      res = "Negative";
-  }
-
-  var res_sent = "The review is %res%.".replace("%res%",res);
+  var res = "POLITICS";
+  var res_sent = "The label is %res%.".replace("%res%",res);
   console.log(res_sent);
   $("#toast-conclusion .toast-body").text(res_sent);
   $("#toast-conclusion").toast("show");
 }
 
-data11 = {
+probab_data = {
     datasets: [{
         data: [1,2,3,4,5,
         1,2,3,4,5,
@@ -320,10 +294,11 @@ data11 = {
 };
 
 function procPieChartsToast(data) {
+    probab_data.datasets[0].data = data['prob'];
     var ctx =$('#myChart');
     var myPieChart = new Chart(ctx, {
         type: 'doughnut',
-        data: data11,
+        data: probab_data,
         options: {
           {#responsive: false,#}
           legend: {
@@ -348,21 +323,18 @@ function submitText() {
 
   $.ajax({
     type: "POST",
-    url: "{% url 'classifier:predict' %}",
+    url: "{% url 'classifier:predict_news' %}",
     data: {"input_text":text},    
     dataType: "json",  
     success: function (data) {
       console.log('Submission was successful.');
       console.log(data["input_text"]);      
       $('#explanation').text(data["explanation"]); //experimental
-      switchResult(data);
       fillbackTextArea(data);
-      computeProb(data);
 
+      drawResult(data);
       procConclusionToast(data);
       procPieChartsToast(data);
-      drawResult();
-
      
     },
     error: function (data) {
