@@ -50,6 +50,8 @@ probab_data = {
 };
 
 function procPieChartsToast(data) {
+    $('#myChart').remove();
+    $('#chart-container').append('<canvas id="myChart" width="1200" height="600"></canvas>');
     probab_data.datasets[0].data = data['prob'];
     var ctx =$('#myChart');
     var myPieChart = new Chart(ctx, {
