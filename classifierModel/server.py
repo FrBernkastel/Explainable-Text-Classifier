@@ -86,12 +86,10 @@ class PredictServer(rpyc.Service):
 
         res = self.lr2.predict_topk(text, 5)
 
-
         # res['labels_prob'] = [('SPORTS', 0.03528977019242901) * 31] #acsending sort
         # res['topk_label_proba'] =  [('SPORTS', 0.03528977019242901) * 5] #acsending sort
 
         # res['label__feat_coef'] =  {'SPORTS': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)] * 31  } #order by label name
-
 
         return json.dumps(res)
 
