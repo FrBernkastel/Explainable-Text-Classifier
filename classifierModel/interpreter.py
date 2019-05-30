@@ -5,8 +5,8 @@ from nltk.corpus import stopwords
 class explain():
     def __init__(self, classifier):
         # the threshold that means import
-        self.pos_num = 200
-        self.neg_num = 300
+        self.pos_num = 1000
+        self.neg_num = 1500
 
         self.lr = classifier
         self.features = self.feature_arr()
@@ -42,8 +42,8 @@ class explain():
         l.sort()
         pos_thre = l[-self.pos_num]
         neg_thre = l[self.neg_num]
-        # print(pos_thre)
-        # print(neg_thre)
+
+
         return (pos_thre, neg_thre)
 
     def get_explanation(self, vec):
