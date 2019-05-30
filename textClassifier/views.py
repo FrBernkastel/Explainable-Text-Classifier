@@ -20,10 +20,10 @@ def news(request):
 def predict_news(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")
-        # label_proba, prob, exp = remote_predict_news(input_text)
+        label_proba, prob, exp = remote_predict_news(input_text)
         exp = ""
-        label_proba = [('SPORTS', 0.03528977019242901),('POLOTICS',0.02)]
-        prob = [0.3]*31
+        # label_proba = [('SPORTS', 0.03528977019242901),('POLOTICS',0.02)]
+        # prob = [0.3]*31
         context = {"explanation": exp, "input_text": input_text,
                    "labels": label_proba, "prob": prob}
         return JsonResponse(context, safe=False)
@@ -38,12 +38,13 @@ def remote_predict_news(text):
         with rpyc.connect(HOST, PORT) as conn:
             # text = "I love the dog, and the world, and, everything"
             res_json = conn.root.predict_news(text)
+            print(res_json)
             import json
             res = json.loads(res_json)
             print(res)
             # 'label', 'probability', 'confidence', 'flag', 'explanation'
-            label = res['topk_label_proba']
             prob = res['labels_prob']
+            label = res['topk_label_proba']
             exp = res['label__feat_coef']
 
             return label, prob, exp

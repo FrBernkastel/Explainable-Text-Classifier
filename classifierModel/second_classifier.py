@@ -27,7 +27,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
 # import matplotlib.pyplot as plt
-import seaborn as sns
 # %matplotlib inline
 import warnings
 
@@ -196,12 +195,7 @@ class LogisRegression(object):
 
         proba_list = self.cls.predict_proba(X_test)
         tag_proba_list = tag_proba_func(self.cls.classes_, proba_list[0])
-        tag_proba_list.sort(key=operator.itemgetter(1))
-        # reverse tag_proba_list
-        tmp = list()
-        for i in range(len(tag_proba_list)):
-            tmp[i] = tag_proba_list[len(tag_proba_list) - 1 - i]
-        tag_proba_list = tmp
+        tag_proba_list.sort(key=operator.itemgetter(1), reverse=True)
 
         # labels (31,)
         labels = self.cls.classes_
@@ -214,7 +208,7 @@ class LogisRegression(object):
         transform = self._vectorize.transform([text])[0]
 
         res = dict()
-        res['labels_prob'] = proba_list[0]
+        res['labels_prob'] = list(proba_list[0])
         res['topk_label_proba'] = tag_proba_list[:self.topk]
         res['label__feat_coef'] = dict()
         for i in range(labels.shape[0]):
