@@ -21,8 +21,19 @@ def predict(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")
     
-        label,prob,conf,flag,exp_words = remote_predict(input_text)
+        label,prob,conf,flag,exp_words_list = remote_predict(input_text)
         
+        #1.process the exp_words
+        exp_words = set()
+        for gram in exp_words_list:
+            gram = gram.strip()
+            words = gram.split(" ")
+            for w in words:
+                exp_words.add(w)
+        exp_words = list(exp_words)
+        print(exp_words)
+
+        #2.determine the conclusion
         pos_flag = label
         neg_flag = 1-pos_flag
 
@@ -31,9 +42,12 @@ def predict(request):
             neg_flag = 0
         print(flag,pos_flag,neg_flag)
 
+        #!should remove the debug message
         message = "The label is {}, because it contains words like: {}, the probability is: {} \
         , the confidence is: {}, the flag is :{}".format("POS" if pos_flag == 1 else "NEG",exp_words, prob, conf, flag)
         print(message)
+
+        #3. calculate the prob for each label
         pos_prob = 0.5
         neg_prob = 0.5
         if pos_flag == 1:
@@ -43,6 +57,7 @@ def predict(request):
             pos_prob = (1-prob)*100
             neg_prob = (prob)*100
 
+        #4. construct the json response
         context = {"explanation": message,"pos_flag":pos_flag,"neg_flag":neg_flag,\
                    "input_text" : input_text,"pos_prob":pos_prob,"neg_prob":neg_prob, \
                    "exp_words":exp_words}
