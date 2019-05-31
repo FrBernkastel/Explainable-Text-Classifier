@@ -27,9 +27,7 @@ from sklearn.metrics import accuracy_score ,confusion_matrix
 
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
-# import matplotlib.pyplot as plt
-import seaborn as sns
-# %matplotlib inline 
+
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -153,74 +151,7 @@ class LogisRegression(object):
         cls.fit(X,y)
         return cls
 
-    def predict_topk(self, input_text, k):
-        self.topk = k
-
-        # print('convert data')
-        # Convert pandas series into numpy array
-        X_test = np.array([input_text, "Will Smith Joins Diplo And Nicky Jam For The 2018 World Cup Official Song"])
-        cleanHeadlines_test = [] #To append processed headlines
-        number_reviews_test = len(X_test) #Calculating the number of reviews
-
-        # print('clean headline')
-        # from nltk.stem import PorterStemmer, WordNetLemmatizer
-        lemmetizer = WordNetLemmatizer()
-        stemmer = PorterStemmer()
-        def get_words(headlines_list):
-            headlines = headlines_list   
-            headlines_only_letters = re.sub('[^a-zA-Z]', ' ', headlines)
-            words = nltk.word_tokenize(headlines_only_letters.lower())
-            stops = set(stopwords.words('english'))
-            meaningful_words = [lemmetizer.lemmatize(w) for w in words if w not in stops]
-            return ' '.join(meaningful_words )
-
-
-        for i in range(0,number_reviews_test):
-            cleanHeadline = get_words(X_test[i]) #Processing the data and getting words with no special characters, numbers or html tags
-            cleanHeadlines_test.append( cleanHeadline )
-
-        tfidwords_test = self._vectorize.transform(cleanHeadlines_test)
-        X_test = tfidwords_test.toarray()
-
-        
-        def tag_proba_func(tag, proba):
-            res = []
-            for i in range(len(tag)):
-                res.append( (tag[i], float(proba[i])) )
-            return res
-        proba_list = self.cls.predict_proba(X_test)
-        tag_proba_list = tag_proba_func(self.cls.classes_, proba_list[0])
-        tag_proba_list.sort(key = operator.itemgetter(1) )
-        # reverse tag_proba_list
-        tmp = list()
-        for i in range(len(tag_proba_list)):
-            tmp[i] = tag_proba_list[len(tag_proba_list) - 1 - i]
-        tag_proba_list = tmp
-
-
-        # labels (31,)
-        labels = self.cls.classes_
-        # coef (31, 30000)
-        coef = self.cls.coef_
-        # feature names len()=30000
-        feature_names = self._vectorize.get_feature_names()
-        # transform (1, 30000)
-        text = "Hugh Grant Marries For The First Time At Age 57"
-        transform = self._vectorize.transform([text])[0]
-
-
-        res = dict()
-        res['labels_prob'] = proba_list[0]
-        res['topk_label_proba'] = tag_proba_list[:self.topk]        
-        res['label__feat_coef'] = dict()
-        for i in range(labels.shape[0]) :
-            feat_coef = list()
-            for j in transform.indices:
-                feat_coef.append( (feature_names[j], coef[i][j]) )
-            feat_coef.sort( key = operator.itemgetter(1) )
-            res['label__feat_coef'][labels[i]] = feat_coef
-
-        return res
+    
 
 
     # def evaluate(self, X, yt, cls, name='data'):
