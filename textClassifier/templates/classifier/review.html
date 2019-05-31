@@ -108,7 +108,7 @@
 
               <div class = "col-sm-6 px-sm-1 rounded-1" id = "neg_paragraph"> 
                 <p hidden="hidden"> {{ neg_flag }} </p>
-                <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="right" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a negative review :)</a>         
+                <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="right" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a negative review :(</a>
               </div>
           </div>
 
@@ -126,13 +126,13 @@
             </a>
           </p>
           
-          <div class="row pb-sm-3"> 
+          <div class="row pb-sm-6 mb-sm-3">
             <div class="col-sm-6">
               <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-conclusion">
                 <div class="toast-header">
                   <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
                   <strong class="mr-auto">Conclusion</strong>
-                  <small>11 mins ago</small>
+{#                  <small>11 mins ago</small>#}
                   <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -143,11 +143,11 @@
               </div>              
             </div>
             <div class="col-sm-6">
-              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-confidence">
+              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-probability">
                 <div class="toast-header">
                   <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
-                  <strong class="mr-auto">Confidence</strong>
-                  <small>11 mins ago</small>
+                  <strong class="mr-auto">Probability</strong>
+{#                  <small>11 mins ago</small>#}
                   <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -159,11 +159,25 @@
             </div>
           </div>
 
+          <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-confidence">
+            <div class="toast-header">
+              <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
+              <strong class="mr-auto">Confidence</strong>
+{#              <small>11 mins ago</small>#}
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body">
+
+            </div>
+          </div>
+
           <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-explanation">
             <div class="toast-header">
               <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
               <strong class="mr-auto">Explanation</strong>
-              <small>11 mins ago</small>
+{#              <small>11 mins ago</small>#}
               <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
