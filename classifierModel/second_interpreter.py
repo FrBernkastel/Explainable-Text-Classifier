@@ -30,46 +30,53 @@ class explain():
         feature_names = self.lr._vectorize.get_feature_names() #liu
         # coef (31, 30000)
         self.coefs = self.lr.cls.coef_
+        self.pos_num = 1000
+
+        self.thresholds = []
+        for i in range(len(self.coefs)):
+            coefs_sorted = sorted(self.coefs[i], reverse = True)
+            th = coefs_sorted[self.pos_num]
+            self.thresholds.append(th)
 
         # self.pos_threshold, self.neg_threshold = self.get_threshold() #wq
         # self.stopwords = set(stopwords.words('english')) #wq
 
 
-    # def get_threshold(self):
-    #     """
+        # def get_threshold(self):
+        #     """
 
-    #     :return: return the threshold of mater coefficient
-    #     """
-    #     # l = [(features[i], coefs[i]) for i in range(len(features))]
-    #     # l.sort(key=lambda tp: tp[1])
-    #     l = self.coefs.copy()
-    #     l.sort()
-    #     pos_thre = l[-self.pos_num]
-    #     neg_thre = l[self.neg_num]
-    #     # print(pos_thre)
-    #     # print(neg_thre)
-    #     return (pos_thre, neg_thre)
+        #     :return: return the threshold of mater coefficient
+        #     """
+        #     # l = [(features[i], coefs[i]) for i in range(len(features))]
+        #     # l.sort(key=lambda tp: tp[1])
+        #     l = self.coefs.copy()
+        #     l.sort()
+        #     pos_thre = l[-self.pos_num]
+        #     neg_thre = l[self.neg_num]
+        #     # print(pos_thre)
+        #     # print(neg_thre)
+        #     return (pos_thre, neg_thre)
 
-    # def get_explanation(self, vec):
-    #     """
+        # def get_explanation(self, vec):
+        #     """
 
-    #     :param vec: the vector of target text
-    #     :return: res: a dictionary of import words; flag: false for no valued words
-    #     """
-    #     # get feature to coefficient mapping
-    #     mapping = [(self.features[i], self.coefs[i]) for i in vec.indices]
-    #     mapping.sort(key=lambda tp: tp[1])
-    #     print(mapping)
-    #     valued_pos = [x[0] for x in mapping if x[1] >= self.pos_threshold and x[0] not in self.stopwords]
-    #     valued_neg = [x[0] for x in mapping if x[1] <= self.neg_threshold and x[0] not in self.stopwords]
-    #     if len(valued_neg) == 0 and len(valued_pos) == 0:
-    #         flag = False
-    #     else:
-    #         flag = True
-    #     res = dict()
-    #     res['valued_pos'] = valued_pos
-    #     res['valued_neg'] = valued_neg
-    #     return res, flag
+        #     :param vec: the vector of target text
+        #     :return: res: a dictionary of import words; flag: false for no valued words
+        #     """
+        #     # get feature to coefficient mapping
+        #     mapping = [(self.features[i], self.coefs[i]) for i in vec.indices]
+        #     mapping.sort(key=lambda tp: tp[1])
+        #     print(mapping)
+        #     valued_pos = [x[0] for x in mapping if x[1] >= self.pos_threshold and x[0] not in self.stopwords]
+        #     valued_neg = [x[0] for x in mapping if x[1] <= self.neg_threshold and x[0] not in self.stopwords]
+        #     if len(valued_neg) == 0 and len(valued_pos) == 0:
+        #         flag = False
+        #     else:
+        #         flag = True
+        #     res = dict()
+        #     res['valued_pos'] = valued_pos
+        #     res['valued_neg'] = valued_neg
+        #     return res, flag
 
 
 
@@ -135,8 +142,9 @@ class explain():
         for i in range(labels.shape[0]) :
             feat_coef = list()
             for j in input_transform.indices:
-                feat_coef.append( (feature_names[j], coef[i][j]) )
-            feat_coef.sort( key = operator.itemgetter(1) )
+                if (coef[i][j] >= self.thresholds[i]):
+                    feat_coef.append( (feature_names[j], coef[i][j]) )
+            feat_coef.sort( key = operator.itemgetter(1),reverse=True)
             res['label__feat_coef'][labels[i]] = feat_coef
 
         return res
