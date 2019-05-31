@@ -34,6 +34,7 @@ function computeResult(data) {
   var color = "";
   var prob = "50%";
   var prob_val = 50;
+
   if (pos_flag==0 && neg_flag==0) {
       res = "Neutral";
       color = "yellow";
