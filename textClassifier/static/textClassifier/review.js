@@ -32,7 +32,7 @@ function computeResult(data) {
   var neg_flag = data["neg_flag"];
   var res = "";
   var color = "";
-  var prob = "50%"
+  var prob = "50%";
   if (pos_flag==0 && neg_flag==0) {
       res = "Neutral";
       color = "yellow";
