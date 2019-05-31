@@ -32,7 +32,8 @@ function computeResult(data) {
   var neg_flag = data["neg_flag"];
   var res = "";
   var color = "";
-  var prob = "50%"
+  var prob = "50%";
+  var prob_val = 50;
   if (pos_flag==0 && neg_flag==0) {
       res = "Neutral";
       color = "yellow";
@@ -40,12 +41,14 @@ function computeResult(data) {
       res = "Positive";
       color = "green";
       prob = data["pos_prob"].toFixed(2).toString() + "%";
+      prob_val = data["pos_prob"];
   } else {
       res = "Negative";
       color = "red";
       prob = data["neg_prob"].toFixed(2).toString() + "%";
+      prob_val = data["neg_prob"];
   }
-  return {"text":res, "color":color, "prob":prob};
+  return {"text":res, "color":color, "prob":prob, "prob_val":prob_val};
 }
 
 function textColor(color) {
@@ -100,15 +103,46 @@ function procConclusionToast(data) {
   $("#toast-conclusion").toast("show");
 }
 
-function procConfidenceToast(data) {
+function procProbabilityToast(data) {
   res = computeResult(data);
   prob = res["prob"];
   color = res["color"];
-  var res_sent = "<h6> The probability is "+labelTextColor(prob,color)+".</h6>";
+  prob_val = res["prob_val"];
+
+  if (prob_val !== 50) {
+      var res_sent = "<h6> The probability is " + labelTextColor(prob, color) + ".</h6>";
+
+      $("#toast-probability .toast-body").html(res_sent);
+      $("#toast-probability .toast-header i").removeClass("text-success text-warning text-danger").addClass(textColor(color));
+      $("#toast-probability").toast("show");
+  }
+}
+
+function procConfidenceToast(data) {
+  res = computeResult(data);
+  prob_val = res["prob_val"];
+
+  var res_sent;
+
+  if (prob_val === 50) {
+      res_sent = "<h6>This is an emotionless sentence.</h6>";
+  }
+
+  if (prob_val < 70 && prob_val > 50) {
+      res_sent = "<h6>We are not very confident about this prediction.</h6>";
+  }
+  if (prob_val < 90 && prob_val >=70) {
+      res_sent = "<h6>We are confident about this prediction.</h6>";
+  }
+  if (prob_val >= 90) {
+      res_sent = "<h6>We are very certain about this prediction.</h6>";
+  }
+
   $("#toast-confidence .toast-body").html(res_sent);
   $("#toast-confidence .toast-header i").removeClass("text-success text-warning text-danger").addClass(textColor(color));
   $("#toast-confidence").toast("show");
 }
+
 
 function findWordIndex(sent,word) {
   //core algorithm: very dirty work!
@@ -194,6 +228,7 @@ function submitText() {
       fillbackTextArea(data);
       computeProb(data);
       procConclusionToast(data);
+      procProbabilityToast(data);
       procConfidenceToast(data);
       procExplanationToast(data);
       drawResult();
