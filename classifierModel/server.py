@@ -5,6 +5,7 @@ import rpyc
 import classifier as cf
 import second_classifier as cf2
 import interpreter as ip
+import second_interpreter as ip2
 import json
 import os
 import pickle
@@ -19,7 +20,7 @@ class PredictServer(rpyc.Service):
         The server that makes predictions for text using a classifier
     """
 
-    def __init__(self, interpreter):
+    def __init__(self, interpreter, interpreter2):
 
         if not os.path.isfile('classifier.backup'):
             self.lr = cf.LogisRegression()
@@ -40,6 +41,9 @@ class PredictServer(rpyc.Service):
         print("lr2 finished")
 
         self.ip = interpreter(self.lr)
+        print("ip finished")
+        self.ip2 = interpreter2(self.lr2)
+        print("ip2 finished")
 
     def exposed_predict(self, text):
         """
@@ -84,11 +88,20 @@ class PredictServer(rpyc.Service):
         except:
             pass
 
-        res = self.lr2.predict_topk(text, 5)
 
-        # res['labels_prob'] = [('SPORTS', 0.03528977019242901) * 31] #acsending sort
+
+        res = self.ip2.predict_topk(text, 5)
+
+        tmp = list()
+        for tup in res['topk_label_proba']:
+            if tup[1] >= 0.05:
+                tmp.append(tup)
+        res['topk_label_proba'] = tmp
+
+
+
+        # res['labels_prob'] = [0.03528977019242901 * 31] #acsending sort
         # res['topk_label_proba'] =  [('SPORTS', 0.03528977019242901) * 5] #acsending sort
-
         # res['label__feat_coef'] =  {'SPORTS': [('curry', 0.5), ('james', 0.3), ('soccer', 0.3)] * 31  } #order by label name
 
         return json.dumps(res)
@@ -103,5 +116,5 @@ class PredictServer(rpyc.Service):
 if __name__ == '__main__':
     from rpyc.utils.server import ThreadPoolServer
 
-    server = ThreadPoolServer(PredictServer(ip.explain), port = PORT)
+    server = ThreadPoolServer(PredictServer(ip.explain, ip2.explain), port = PORT)
     server.start()

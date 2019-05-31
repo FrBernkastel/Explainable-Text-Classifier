@@ -5,8 +5,9 @@ from nltk.corpus import stopwords
 class explain():
     def __init__(self, classifier):
         # the threshold that means import
+
         self.pos_num = 1000
-        self.neg_num = 1500
+        self.neg_num = 1500 #200/300 kcl
 
         self.lr = classifier
         self.features = self.feature_arr()
@@ -55,7 +56,7 @@ class explain():
         # get feature to coefficient mapping
         mapping = [(self.features[i], self.coefs[i]) for i in vec.indices]
         mapping.sort(key=lambda tp: tp[1])
-        print(mapping)
+        # print(mapping)
         valued_pos = [x[0] for x in mapping if x[1] >= self.pos_threshold and x[0] not in self.stopwords]
         valued_neg = [x[0] for x in mapping if x[1] <= self.neg_threshold and x[0] not in self.stopwords]
         if len(valued_neg) == 0 and len(valued_pos) == 0:
