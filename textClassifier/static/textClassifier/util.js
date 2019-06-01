@@ -106,7 +106,6 @@ function findWordIndex(sent,word) {
       }
       index = sent.indexOf(word, index+1);
   }
-  console.log(word, res.length);
   return res;
 }
 
@@ -140,6 +139,7 @@ function generateColorSent(exp_words, input_text, color) {
 
 
 function beforeSubmitText() {
+  console.log("enter it!"); 
   $("#load-spinner").removeClass("d-none");
   $("#predict-id").addClass("d-none");
   $("#predict-id").parent().attr("disabled","disabled");

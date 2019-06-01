@@ -145,6 +145,7 @@ function procExplanationToast(data) {
 //submission code
 function submitText() {
   var text = $('#input_text').val();
+  console.log("Enter review.js submitText()")
   beforeSubmitText();
 
   $.ajax({
@@ -154,7 +155,6 @@ function submitText() {
     dataType: "json",
     success: function (data) {
       console.log('Submission was successful.');
-      console.log(data["input_text"]);
       $('#explanation').text(data["explanation"]); //experimental
       switchResult(data);
       fillbackTextArea(data);
