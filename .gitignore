@@ -1,3 +1,4 @@
 .idea/*
 /ExplainAny/__pycache__/*
 /classifierModel/__pycache__/*
+/textClassifier/__pycache__/*
