@@ -95,6 +95,8 @@ function procProbabilityToast(data) {
       $("#toast-probability .toast-body").html(res_sent);
       $("#toast-probability .toast-header i").removeClass("text-success text-warning text-danger").addClass(textColor(color));
       $("#toast-probability").toast("show");
+  } else {
+      $("#toast-probability").toast("hide");
   }
 }
 
@@ -163,8 +165,23 @@ function submitText() {
       drawResult();
     },
     error: function (data) {
-      console.log('An error occurred.');
+      console.log('An error occurred in submitText(). (review.js)');
       console.log(data);
     },
   });
+}
+
+//random pick and predict
+function randomPredict() {
+    $.ajax({
+        type: "GET",
+        url: "pick/",
+        success: function (data) {
+            showAndPredict(data);
+        },
+        error: function (data) {
+            console.log('An error occurred in randomPick(). (review.js)');
+            console.log(data);
+        }
+    });
 }
