@@ -106,6 +106,7 @@ function procPieChartsToast(data) {
 function submitText(){
     //3. remove example
   $("#news-example").remove();
+  $("#chart-container").removeClass("d-none");
   if ($("#input_text").val().length == 0) {
   }
 
