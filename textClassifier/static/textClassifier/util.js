@@ -28,6 +28,12 @@ function charLimit(el) {
 }
 function characterCount(el) {
     var charCount = document.getElementById('charCount');
+    if (el.value.length == 0) {
+        $("#predict-id").parent().attr("disabled","disabled");
+    }
+    else {
+      $("#predict-id").parent().removeAttr("disabled");
+    }
     if (el.value.length > maxLength) el.value = el.value.substring(0,maxLength);
     if (charCount) charCount.innerHTML = maxLength - el.value.length;
     return true;
@@ -130,4 +136,18 @@ function generateColorSent(exp_words, input_text, color) {
       }
     }
     return res_sent;
+}
+
+
+function beforeSubmitText() {
+  $("#load-spinner").removeClass("d-none");
+  $("#predict-id").addClass("d-none");
+  $("#predict-id").parent().attr("disabled","disabled");
+}
+
+function afterSubmitText() {
+  $("#load-spinner").addClass("d-none");
+  $("#predict-id").removeClass("d-none");
+  $("#predict-id").parent().removeClass("disabled");
+  $("#predict-id").parent().removeAttr("disabled");
 }

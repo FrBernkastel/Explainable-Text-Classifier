@@ -94,7 +94,8 @@ function procPieChartsToast(data) {
           },
           title: {
             display: true,
-            text: 'Predicted probabilities of each category'
+            text: 'Predicted probabilities of each category',
+            fontSize: 14,
           }
         }
 
@@ -107,6 +108,8 @@ function submitText(){
     //3. remove example
   $("#news-example").remove();
   $("#chart-container").removeClass("d-none");
+  beforeSubmitText();
+
   if ($("#input_text").val().length == 0) {
   }
 
@@ -123,11 +126,12 @@ function submitText(){
           $('#explanation').text(data["explanation"]); //experimental
           fillbackTextArea(data);
           drawResult(data);
+          afterSubmitText();
           procExpToast(data);
           procPieChartsToast(data);
-
         },
         error: function (data) {
+          afterSubmitText();
           console.log('An error occurred.');
           console.log(data);
         },
@@ -155,6 +159,7 @@ function randomPredict_news() {
         url: "../pick2/",
         success: function (data) {
             showAndPredict(data);
+            characterCount($("textarea")[0]);
         },
         error: function (data) {
             console.log('An error occurred in randomPick(). (review.js)');

@@ -145,6 +145,7 @@ function procExplanationToast(data) {
 //submission code
 function submitText() {
   var text = $('#input_text').val();
+  beforeSubmitText();
 
   $.ajax({
     type: "POST",
@@ -158,6 +159,7 @@ function submitText() {
       switchResult(data);
       fillbackTextArea(data);
       computeProb(data);
+      afterSubmitText();
       procConclusionToast(data);
       procProbabilityToast(data);
       procConfidenceToast(data);
@@ -167,8 +169,11 @@ function submitText() {
     error: function (data) {
       console.log('An error occurred in submitText(). (review.js)');
       console.log(data);
+      afterSubmitText();
+
     },
   });
+
 }
 
 //random pick and predict
@@ -178,6 +183,7 @@ function randomPredict() {
         url: "pick/",
         success: function (data) {
             showAndPredict(data);
+            characterCount($("textarea")[0]);
         },
         error: function (data) {
             console.log('An error occurred in randomPick(). (review.js)');
