@@ -43,7 +43,7 @@
 
 <header>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="https://getbootstrap.com/docs/4.0/examples/navbars/#">
+    <a class="navbar-brand" href="https://github.com/FrBernkastel/Explainable-Text-Classifier">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
       <strong>Explain Anything</strong>      
     </a>
@@ -90,27 +90,29 @@
             </div>
             <p class="text-right text-black-50"><strong><span id="charCount">100</span></strong> more characters available.</p>        
             <div class="row p-sm-3">
-              <div class="col-sm-6 text-left ">
+              <div class="col-sm-4 text-left ">
                 <button type="button" onclick="submitText();" class="btn btn-dark btn-block">Predict</button>
               </div>
-              <div class="col-sm-6 text-right">
-                <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>      
+              <div class="col-sm-4 text-right">
+                <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>
+              </div>
+              <div class="col-sm-4 text-right">
+                <button type="button" class="btn btn-outline-dark btn-block" onclick="randomPredict_news(this);">Random</button>
               </div>
             </div>
         </div>
           
         <div class = "col-sm-6">
-
-          <p class="pt-sm-2 text-left" id = "news-example">
-            <a class="btn btn-outline-dark" role="button" aria-expanded="false" onclick="showExample();">
+          <div class="text-left" id = "news-example">
+            <a class="btn btn-outline-dark mb-sm-2" role="button" aria-expanded="false" onclick="showExample();">
               Try this example :)
             </a>   
-            <div class="card card-body" id = "example-text">
+            <div class="card card-body mb-sm-2" id = "example-text">
               <h6>President Donald Trump said on Thursday the United States will impose a 5% tariff on all goods coming from Mexico starting on June 10 until illegal immigration across the southern border is stopped. </h6>
             </div>
-          </p>
+          </div>
 
-          <div class = "w-auto text-left" style = "font-size:120%"  id = "label-container">
+          <div class = "w-auto text-left mb-sm-2" style = "font-size:120%"  id = "label-container">
               <span class="badge badge-primary d-none"  id = "label0"> </span>
               <span class="badge badge-warning d-none" id = "label1"> </span>
               <span class="badge badge-success d-none"  id = "label2"> </span>
@@ -118,53 +120,39 @@
               <span class="badge badge-dark d-none" id = "label4"> </span>
           </div>
           
-          <div class="row"> 
-            <div class="col-sm-6">
-              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-conclusion">
+          <div class="row mb-sm-2">
+            <div class="col-sm-auto">
+              <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-chart">
                 <div class="toast-header">
                 <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
-                  <strong class="mr-auto">Conclusion</strong>
-                  <small>11 mins ago</small>
+                  <strong class="mr-auto">Probability</strong>
+{#                  <small>11 mins ago</small>#}
                   <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="toast-body">
-                 
-                </div>
-              </div>              
-            </div>
-            <div class="col-sm-6">
-              <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-confidence">
-                <div class="toast-header">
-                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
-                  <strong class="mr-auto">Bootstrap</strong>
-                  <small>11 mins ago</small>
-                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="toast-body">
+
+                <div class="toast-body d-none" id="chart-container">
+                  <canvas id="myChart" width="1200" height="600"></canvas>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-sm-auto">
-              <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-chart">
+          <div class="row"> 
+            <div class="col-sm-12">
+              <div class="toast" role="alert" style="max-width: 900px;" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-explanation">
                 <div class="toast-header">
                 <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect fill="#007aff" width="100%" height="100%"></rect></svg>
-                  <strong class="mr-auto">Bootstrap</strong>
-                  <small>11 mins ago</small>
+                  <strong class="mr-auto">Explanation</strong>
+{#                  <small>11 mins ago</small>#}
                   <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="toast-body" id="chart-container">
-                    <canvas id="myChart" width="1200" height="600"></canvas>
+                <div class="toast-body">
                 </div>
-              </div>
+              </div>              
             </div>
           </div>
 
@@ -177,11 +165,10 @@
 
 <footer class="text-muted">
   <div class="container">
-    <p class="float-right">
-      <a href="https://getbootstrap.com/docs/4.3/examples/album/#">Back to top</a>
-    </p>
-    <p>Album example is © Bootstrap, but please download and customize it for yourself!</p>
-    <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our <a href="https://getbootstrap.com/docs/4.3/getting-started/introduction/">getting started guide</a>.</p>
+{#    <p class="float-right">#}
+{#      <a href="https://getbootstrap.com/docs/4.3/examples/album/#">Back to top</a>#}
+{#    </p>#}
+    <p> © 2019 Yancen P, Qian W, Kaichen L. Final project for CSE 256 Statistical NLP at UCSD :)</p>
   </div>
 </footer>
 
@@ -190,8 +177,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-<script src="{% static 'textClassifier/util.js' %}"></script>
-<script src="{% static 'textClassifier/news.js' %}"></script>
+<script type="text/javascript" src="{% static 'textClassifier/util.js' %}"></script>
+<script type="text/javascript" src="{% static 'textClassifier/news.js' %}"></script>
 
 </body>
 </html>

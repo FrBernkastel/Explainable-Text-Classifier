@@ -7,6 +7,33 @@ function drawResult(data) {
     });
 }
 
+function procExpToast(data) {
+  var flag = data['flag'];
+  var exp = data['explanation'];
+  var input_text = data['input_text'];
+  var top1 = data['labels'][0][0]
+  console.log("label: ",top1);
+  console.log("fuck!");
+  var exp_words_prob = exp[top1];
+  console.log(exp_words_prob);
+  var i;
+  var exp_words = []
+  for (i=0;i<exp_words_prob.length;i++) {
+      exp_words.push(exp_words_prob[i][0]);
+  }
+  //get exp_words
+  console.log(exp_words);
+  var res_sent = "";
+  if (exp_words.length==0) {
+    res_sent = "This sentence doesn't make any sense!";
+  } else {
+    var color = "blue"; 
+    var res_sent = generateColorSent(exp_words, input_text, color);
+  }
+  $("#toast-explanation .toast-body").html("<h6>"+res_sent+"</h6>");
+  $("#toast-explanation").toast("show");
+}
+
 function procConclusionToast(data) {
   var res = "POLITICS";
   var res_sent = "The label is %res%.".replace("%res%",res);
@@ -79,7 +106,7 @@ function procPieChartsToast(data) {
 function submitText(){
     //3. remove example
   $("#news-example").remove();
-  $("#example-text").remove();
+  $("#chart-container").removeClass("d-none");
   if ($("#input_text").val().length == 0) {
   }
 
@@ -93,12 +120,10 @@ function submitText(){
         dataType: "json",
         success: function (data) {
           console.log('Submission was successful.');
-          console.log(data["input_text"]);
           $('#explanation').text(data["explanation"]); //experimental
           fillbackTextArea(data);
-
           drawResult(data);
-          procConclusionToast(data);
+          procExpToast(data);
           procPieChartsToast(data);
 
         },
@@ -114,14 +139,26 @@ function submitText(){
 function showExample() {
   
   //1. fillback
-  var input_text = $("#example-text h6").text();
-  data_dict = {"input_text":input_text};
-  fillbackTextArea(data_dict);
-
   //2. manual submitText
-  submitText();
+  var input_text = $("#example-text h6").text();
+  showAndPredict(input_text);
 
   //3. remove example
   $("#news-example").remove();
   $("#example-text").remove();
+}
+
+//random pick and predict
+function randomPredict_news() {
+    $.ajax({
+        type: "GET",
+        url: "../pick2/",
+        success: function (data) {
+            showAndPredict(data);
+        },
+        error: function (data) {
+            console.log('An error occurred in randomPick(). (review.js)');
+            console.log(data);
+        }
+    });
 }

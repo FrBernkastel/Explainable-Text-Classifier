@@ -94,7 +94,7 @@ class PredictServer(rpyc.Service):
 
         tmp = list()
         for tup in res['topk_label_proba']:
-            if tup[1] >= 0.05:
+            if tup[1] >= 1/31:
                 tmp.append(tup)
         res['topk_label_proba'] = tmp
 
