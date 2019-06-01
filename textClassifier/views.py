@@ -28,6 +28,7 @@ def pick_review(request):
     else:
         pass
 
+
 # random return a news headline
 def pick_news(request):
     global news_list, news_init
@@ -44,6 +45,7 @@ def pick_news(request):
     else:
         pass
 
+
 # Create your views here.
 def review(request):
     context = {"pos_flag":1,"neg_flag":0, "explanation": "This text is negative because of too many negative words."}
@@ -57,12 +59,12 @@ def news(request):
 def predict_news(request):
     if request.method == 'POST':
         input_text = request.POST.get("input_text")
-        label_proba, prob, exp = remote_predict_news(input_text)
-        exp = ""
+        label_proba, prob, exp, flag = remote_predict_news(input_text)
+        # exp = "" 
         # label_proba = [('SPORTS', 0.03528977019242901),('POLOTICS',0.02)]
         # prob = [0.3]*31
         context = {"explanation": exp, "input_text": input_text,
-                   "labels": label_proba, "prob": prob}
+                   "labels": label_proba, "prob": prob, "flag":flag}
         return JsonResponse(context, safe=False)
     else:
         pass
@@ -78,12 +80,14 @@ def remote_predict_news(text):
             import json
             res = json.loads(res_json)
             print(res.keys())
+
             # 'label', 'probability', 'confidence', 'flag', 'explanation'
             prob = res['labels_prob']
             label = res['topk_label_proba']
             exp = res['label__feat_coef']
+            flag =  res['flag']
 
-            return label, prob, exp
+            return label, prob, exp, flag
 
     except Exception as e:
         raise e
