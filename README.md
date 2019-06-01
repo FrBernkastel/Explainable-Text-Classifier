@@ -43,6 +43,18 @@ Finally, type `<your IP address>:8000/classifier` to visit the website.
 3. Task2: 5%
 * Research on an existing code.
 
+### 5/31/2019
+1. Django: 90%
+* Finished most funtional components of the web application.
+* Better UI design ideas are required.
+* Better interactive explanation representation is required.
+2. Task1: 90%
+* How to set the threshold for exp_words?
+* Better models or better explanation?
+3. Task2: 90%
+* Some quantitative analysis is needed, such as top5 accuracy.
+* exp_words settting.
+
 # Git cheatsheet
 ### How to acquire a repository - git clone
 `git clone <repository-name>`     e.g. `git clone https://github.com/torvalds/linux.git`
