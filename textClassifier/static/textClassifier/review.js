@@ -95,6 +95,8 @@ function procProbabilityToast(data) {
       $("#toast-probability .toast-body").html(res_sent);
       $("#toast-probability .toast-header i").removeClass("text-success text-warning text-danger").addClass(textColor(color));
       $("#toast-probability").toast("show");
+  } else {
+      $("#toast-probability").toast("hide");
   }
 }
 

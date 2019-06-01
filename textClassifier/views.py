@@ -7,9 +7,9 @@ import pickle
 import random
 
 review_list = []
-news_list = ["test test", "rrrrrv fgfbd"]
+news_list = []
 review_init = 0
-news_init = 1
+news_init = 0
 
 # random return an review
 def pick_review(request):
@@ -34,10 +34,10 @@ def pick_news(request):
     global news_list, news_init
     if request.method == 'GET':
         if news_init == 0:
-            if not os.path.isfile('review_list.backup'):
+            if not os.path.isfile('textClassifier/static/textClassifier/news_list.backup'):
                 raise FileNotFoundError()
             else:
-                with open('review_list.backup', 'rb') as backup_file:
+                with open('textClassifier/static/textClassifier/news_list.backup', 'rb') as backup_file:
                     news_list = pickle.load(backup_file)
             news_init = 1
         idx = random.randint(0, len(news_list) - 1)
