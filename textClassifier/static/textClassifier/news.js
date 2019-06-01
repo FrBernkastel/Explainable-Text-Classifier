@@ -114,14 +114,26 @@ function submitText(){
 function showExample() {
   
   //1. fillback
-  var input_text = $("#example-text h6").text();
-  data_dict = {"input_text":input_text};
-  fillbackTextArea(data_dict);
-
   //2. manual submitText
-  submitText();
+  var input_text = $("#example-text h6").text();
+  showAndPredict(input_text);
 
   //3. remove example
   $("#news-example").remove();
   $("#example-text").remove();
+}
+
+//random pick and predict
+function randomPredict_news() {
+    $.ajax({
+        type: "GET",
+        url: "../pick2/",
+        success: function (data) {
+            showAndPredict(data);
+        },
+        error: function (data) {
+            console.log('An error occurred in randomPick(). (review.js)');
+            console.log(data);
+        }
+    });
 }

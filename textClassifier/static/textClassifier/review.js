@@ -235,8 +235,23 @@ function submitText() {
       drawResult();
     },
     error: function (data) {
-      console.log('An error occurred.');
+      console.log('An error occurred in submitText(). (review.js)');
       console.log(data);
     },
   });
+}
+
+//random pick and predict
+function randomPredict() {
+    $.ajax({
+        type: "GET",
+        url: "pick/",
+        success: function (data) {
+            showAndPredict(data);
+        },
+        error: function (data) {
+            console.log('An error occurred in randomPick(). (review.js)');
+            console.log(data);
+        }
+    });
 }

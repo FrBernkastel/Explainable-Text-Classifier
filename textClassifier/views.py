@@ -2,10 +2,47 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 import rpyc
+import os
+import pickle
+import random
 
+review_list = []
+news_list = ["test test", "rrrrrv fgfbd"]
+review_init = 0
+news_init = 1
 
+# random return an review
+def pick_review(request):
+    global review_list, review_init
+    if request.method == 'GET':
+        if review_init == 0:
+            print(os.getcwd())
+            if not os.path.isfile('textClassifier/static/textClassifier/review_list.backup'):
+                raise FileNotFoundError()
+            else:
+                with open('textClassifier/static/textClassifier/review_list.backup', 'rb') as backup_file:
+                    review_list = pickle.load(backup_file)
+            review_init = 1
+        idx = random.randint(0, len(review_list)-1)
+        return HttpResponse(review_list[idx])
+    else:
+        pass
 
-#from textClassifier1 import model
+# random return a news headline
+def pick_news(request):
+    global news_list, news_init
+    if request.method == 'GET':
+        if news_init == 0:
+            if not os.path.isfile('review_list.backup'):
+                raise FileNotFoundError()
+            else:
+                with open('review_list.backup', 'rb') as backup_file:
+                    news_list = pickle.load(backup_file)
+            news_init = 1
+        idx = random.randint(0, len(news_list) - 1)
+        return HttpResponse(news_list[idx])
+    else:
+        pass
 
 # Create your views here.
 def review(request):
@@ -38,10 +75,9 @@ def remote_predict_news(text):
         with rpyc.connect(HOST, PORT) as conn:
             # text = "I love the dog, and the world, and, everything"
             res_json = conn.root.predict_news(text)
-            print(res_json)
             import json
             res = json.loads(res_json)
-            print(res)
+            print(res.keys())
             # 'label', 'probability', 'confidence', 'flag', 'explanation'
             prob = res['labels_prob']
             label = res['topk_label_proba']

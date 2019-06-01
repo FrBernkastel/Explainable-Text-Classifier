@@ -41,3 +41,14 @@ function clearText(el) {
 function fillbackTextArea(data) {
   $("#input_text").val(data["input_text"]);
 }
+
+
+//predict a text
+function showAndPredict(data) {
+  //1. fillback
+  data_dict = {"input_text":data};
+  fillbackTextArea(data_dict);
+
+  //2. manual submitText
+  submitText();
+}
