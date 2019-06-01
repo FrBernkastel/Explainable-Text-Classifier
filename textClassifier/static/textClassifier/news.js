@@ -12,17 +12,13 @@ function procExpToast(data) {
   var exp = data['explanation'];
   var input_text = data['input_text'];
   var top1 = data['labels'][0][0]
-  console.log("label: ",top1);
-  console.log("fuck!");
   var exp_words_prob = exp[top1];
-  console.log(exp_words_prob);
   var i;
   var exp_words = []
   for (i=0;i<exp_words_prob.length;i++) {
       exp_words.push(exp_words_prob[i][0]);
   }
   //get exp_words
-  console.log(exp_words);
   var res_sent = "";
   if (exp_words.length==0) {
     res_sent = "This sentence doesn't make any sense!";
@@ -37,7 +33,6 @@ function procExpToast(data) {
 function procConclusionToast(data) {
   var res = "POLITICS";
   var res_sent = "The label is %res%.".replace("%res%",res);
-  console.log(res_sent);
   $("#toast-conclusion .toast-body").text(res_sent);
   $("#toast-conclusion").toast("show");
 }
@@ -94,7 +89,8 @@ function procPieChartsToast(data) {
           },
           title: {
             display: true,
-            text: 'Predicted probabilities of each category'
+            text: 'Predicted probabilities of each category',
+            fontSize: 14,
           }
         }
 
@@ -107,6 +103,9 @@ function submitText(){
     //3. remove example
   $("#news-example").remove();
   $("#chart-container").removeClass("d-none");
+  beforeSubmitText();
+  console.log("enter news.js submitText()");
+
   if ($("#input_text").val().length == 0) {
   }
 
@@ -123,11 +122,12 @@ function submitText(){
           $('#explanation').text(data["explanation"]); //experimental
           fillbackTextArea(data);
           drawResult(data);
+          afterSubmitText();
           procExpToast(data);
           procPieChartsToast(data);
-
         },
         error: function (data) {
+          afterSubmitText();
           console.log('An error occurred.');
           console.log(data);
         },
@@ -155,6 +155,7 @@ function randomPredict_news() {
         url: "../pick2/",
         success: function (data) {
             showAndPredict(data);
+            characterCount($("textarea")[0]);
         },
         error: function (data) {
             console.log('An error occurred in randomPick(). (review.js)');

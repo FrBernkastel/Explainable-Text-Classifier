@@ -43,8 +43,8 @@
 
 <header>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="https://github.com/FrBernkastel/Explainable-Text-Classifier">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+    <a class="navbar-brand" href="/classifier">
+    <i class="fas fa-balance-scale"></i>
       <strong>Explain Anything</strong>      
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,16 +88,19 @@
               <textarea onKeyPress="return charLimit(this)" placeholder="{{ result }}" onKeyUp="return characterCount(this)"  rows="8" class="form-control" aria-label="With textarea" id="input_text" name = "input_text"></textarea>
               
             </div>
-            <p class="text-right text-black-50"><strong><span id="charCount">100</span></strong> more characters available.</p>        
+            <p class="text-right text-black-50"><strong><span id="charCount">500</span></strong> more characters available.</p>        
             <div class="row p-sm-3">
               <div class="col-sm-4 text-left ">
-                <button type="button" onclick="submitText();" class="btn btn-dark btn-block">Predict</button>
+                <button type="button" onclick="submitText();" class="btn btn-dark btn-block" disabled>
+                  <span class="spinner-border spinner-border-sm d-none" id="load-spinner" role="status" aria-hidden="true"></span>
+                  <span id = "predict-id">Predict</span>
+                </button>
               </div>
               <div class="col-sm-4 text-right">
                 <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>
               </div>
               <div class="col-sm-4 text-right">
-                <button type="button" class="btn btn-outline-dark btn-block" onclick="randomPredict(this);">Random</button>
+                <button type="button" class="btn btn-outline-secondary btn-block" onclick="randomPredict(this);">Random</button>
               </div>
             </div>
         </div>
@@ -128,7 +131,7 @@
               Explanation
             </a>
           </p>
-          
+
           <div class="row pb-sm-6 mb-sm-3">
             <div class="col-sm-6">
               <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-conclusion">
@@ -203,7 +206,7 @@
 {#    <p class="float-right">#}
 {#      <a href="https://getbootstrap.com/docs/4.3/examples/album/#">Back to top</a>#}
 {#    </p>#}
-    <p> © 2019 Yancen P, Qian W, Kaichen L. Final project for CSE 256 Statistical NLP at UCSD :)</p>
+    <p> © 2019 Yancen P, Qian W, Kaichen L. Final project for CSE 256 Statistical NLP at UCSD <i class="fas fa-heart text-danger"></i></p>
   </div>
 </footer>
 
