@@ -1,10 +1,54 @@
+var background_color_dict = {
+    'ARTS': 'rgba(255,0,0,1)', 'ARTS & CULTURE': 'rgba(255,99,71,1)', 'BLACK VOICES': 'rgba(255,127,80,1)',
+    'BUSINESS': 'rgba(250,128,114,1)', 'COLLEGE': 'rgba(255,165,0,1)', 'COMEDY': 'rgba(255,215,0,1)',
+    'CRIME': 'rgba(218,165,32,1)', 'EDUCATION': 'rgba(189,183,107,1)', 'ENTERTAINMENT': 'rgba(128,128,0,1)',
+    'FIFTY': 'rgba(255,255,0,1)', 'GOOD NEWS': 'rgba(154,205,50)', 'GREEN': 'rgba(107,142,35)',
+    'HEALTHY LIVING': 'rgba(127,255,0,1)', 'IMPACT': 'rgba(50,205,50,1)', 'LATINO VOICES': 'rgba(152,251,152,1)',
+    'MEDIA': 'rgba(102,205,170,1)', 'PARENTS': 'rgba(0,255,255,1)', 'POLITICS': 'rgba(64,224,208,1)',
+    'QUEER VOICES': 'rgba(175,238,238)', 'RELIGION': 'rgba(95,158,160,1)', 'SCIENCE': 'rgba(100,149,237)',
+    'SPORTS': 'rgba(0,191,255)', 'STYLE': 'rgba(135,206,235,1)', 'TASTE': 'rgba(0,0,128,0.8)',
+    'TECH': 'rgba(65,105,225,1)', 'THE WORLDPOST': 'rgba(138,43,226,1)', 'TRAVEL': 'rgba(106,90,205,1)',
+    'WEIRD NEWS': 'rgba(128,0,128,1)', 'WOMEN': 'rgba(219,112,147,1)', 'WORLD NEWS': 'rgba(255,192,203,1)',
+    'WORLDPOST': 'rgba(210,105,30,1)'};
+
+var color_dict = {'ARTS': 'white', 'ARTS & CULTURE': 'black', 'BLACK VOICES': 'black', 'BUSINESS': 'black',
+    'COLLEGE': 'black', 'COMEDY': 'black', 'CRIME': 'black', 'EDUCATION': 'black', 'ENTERTAINMENT': 'white',
+    'FIFTY': 'black', 'GOOD NEWS': 'black', 'GREEN': 'white', 'HEALTHY LIVING': 'black', 'IMPACT': 'black',
+    'LATINO VOICES': 'black', 'MEDIA': 'black', 'PARENTS': 'black', 'POLITICS': 'black', 'QUEER VOICES': 'black',
+    'RELIGION': 'white', 'SCIENCE': 'black', 'SPORTS': 'black', 'STYLE': 'black', 'TASTE': 'white', 'TECH': 'white',
+    'THE WORLDPOST': 'white', 'TRAVEL': 'black', 'WEIRD NEWS': 'white', 'WOMEN': 'white', 'WORLD NEWS': 'black',
+    'WORLDPOST': 'black'};
+
+var color_contract_dict = {'rgba(255,0,0,1)': 'white', 'rgba(255,99,71,1)': 'black', 'rgba(255,127,80,1)':
+        'black', 'rgba(250,128,114,1)': 'black', 'rgba(255,165,0,1)': 'black', 'rgba(255,215,0,1)': 'black',
+    'rgba(218,165,32,1)': 'black', 'rgba(189,183,107,1)': 'black', 'rgba(128,128,0,1)': 'white',
+    'rgba(255,255,0,1)': 'black', 'rgba(154,205,50)': 'black', 'rgba(107,142,35)': 'white',
+    'rgba(127,255,0,1)': 'black', 'rgba(50,205,50,1)': 'black', 'rgba(152,251,152,1)': 'black',
+    'rgba(102,205,170,1)': 'black', 'rgba(0,255,255,1)': 'black', 'rgba(64,224,208,1)': 'black',
+    'rgba(175,238,238)': 'black', 'rgba(95,158,160,1)': 'white', 'rgba(100,149,237)': 'black',
+    'rgba(0,191,255)': 'black', 'rgba(135,206,235,1)': 'black', 'rgba(0,0,128,0.8)': 'white',
+    'rgba(65,105,225,1)': 'white', 'rgba(138,43,226,1)': 'white', 'rgba(106,90,205,1)': 'black',
+    'rgba(128,0,128,1)': 'white', 'rgba(219,112,147,1)': 'white', 'rgba(255,192,203,1)': 'black',
+    'rgba(210,105,30,1)': 'black'};
+
+
 function drawResult(data) {
     var labels = data['labels'];
+    var start = 0;
     $.each(labels, function(idx, l) {
+        console.log(idx);
         var badge = $('#label'+idx);
+
+        badge.css({"background-color":background_color_dict[l[0]], color:color_dict[l[0]]});
         badge.text(l[0]);
         badge.removeClass('d-none');
+        start = idx+1;
     });
+
+    for (;start<5;start++) {
+        var badge = $('#label'+start);
+        badge.addClass('d-none');
+    }
 }
 
 function procExpToast(data) {
@@ -20,11 +64,14 @@ function procExpToast(data) {
   }
   //get exp_words
   var res_sent = "";
-  if (exp_words.length==0) {
-    res_sent = "This sentence doesn't make any sense!";
+  if (flag != true) {
+    res_sent = "It's a meaningless sentence!";
+  }
+  else if(exp_words.length==0) {
+    res_sent = "This sentence can't be categorized";
   } else {
-    var color = "blue"; 
-    var res_sent = generateColorSent(exp_words, input_text, color);
+    var color = background_color_dict[top1];
+    var res_sent = generateColorSent(exp_words, input_text, color, false);
   }
   $("#toast-explanation .toast-body").html("<h6>"+res_sent+"</h6>");
   $("#toast-explanation").toast("show");

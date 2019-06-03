@@ -77,10 +77,16 @@ function textColor(color) {
   return color_class
 }
 
-function labelTextColor(text, color) {
+function labelTextColor(text, color, flag = true) {
   //output: generate <span class='text-<color>'>text</span>
-  var color_class = textColor(color);
-  return "<span class = '%color_class%'>%text%</span>".replace("%color_class%",color_class).replace("%text%",text);
+  if (flag) {
+      var color_class = textColor(color);
+      return "<span class = '%color_class%'>%text%</span>".replace("%color_class%",color_class).replace("%text%",text);
+  } else {
+      console.log("hereherehere");
+      var color_class = color;
+      return "<span class='rounded' style='background-color:%color_class%;color:%color%;'>%text%</span>".replace("%color%", color_contract_dict[color]).replace("%color_class%",color_class).replace("%text%",text);
+  }
 }
 
 
@@ -98,7 +104,7 @@ function findWordIndex(sent,word) {
       }
       if (index + word.length < sent.length) {
         var postCh = sent[index + word.length];
-        if (postCh>='a' && postCh <= 'z')
+        if (postCh>='a' && postCh <= 'z' )
           post_flag = 0;
       }
       if (pre_flag == 1 && post_flag == 1) {
@@ -109,7 +115,7 @@ function findWordIndex(sent,word) {
   return res;
 }
 
-function generateColorSent(exp_words, input_text, color) {
+function generateColorSent(exp_words, input_text, color, flag = true) {
     var i;
     var res_sent = input_text;
     for (i=0;i<exp_words.length;i++) {
@@ -125,7 +131,7 @@ function generateColorSent(exp_words, input_text, color) {
         var prev_text = res_sent.substring(prev_end_i,start_i);
         var text_to_color = res_sent.substring(start_i, end_i);
         text_blocks.push(prev_text);
-        text_blocks.push(labelTextColor(text_to_color,color));
+        text_blocks.push(labelTextColor(text_to_color, color, flag));
         prev_end_i = end_i;
       }
       text_blocks.push(res_sent.substring(prev_end_i,res_sent.length));
