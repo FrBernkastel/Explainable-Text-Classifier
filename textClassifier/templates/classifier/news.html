@@ -89,18 +89,18 @@
               
             </div>
             <p class="text-right text-black-50"><strong><span id="charCount">500</span></strong> more characters available.</p>        
-            <div class="row p-sm-3">
-              <div class="col-sm-4 text-left ">
+            <div class="row p-3">
+              <div class="col-sm-4 text-left mb-2">
                 <button type="button" onclick="submitText();" class="btn btn-dark btn-block" disabled>
                   <span class="spinner-border spinner-border-sm d-none" id="load-spinner" role="status" aria-hidden="true">
                   </span>
                   <span id="predict-id">Predict </span>
                 </button>
               </div>
-              <div class="col-sm-4 text-right">
+              <div class="col-sm-4 text-right mb-2">
                 <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>
               </div>
-              <div class="col-sm-4 text-right">
+              <div class="col-sm-4 text-right mb-2">
                 <button type="button" class="btn btn-outline-secondary btn-block" onclick="randomPredict_news(this);">Random</button>
               </div>
             </div>
@@ -108,10 +108,10 @@
           
         <div class = "col-sm-6">
           <div class="text-left" id = "news-example">
-            <a class="btn btn-outline-dark mb-sm-2" role="button" aria-expanded="false" onclick="showExample();">
+            <a class="btn btn-outline-dark mb-2" role="button" aria-expanded="false" onclick="showExample();">
               Try this example :)
             </a>   
-            <div class="card card-body mb-sm-2" id = "example-text">
+            <div class="card card-body mb-2" id = "example-text">
               <h6>President Donald Trump said on Thursday the United States will impose a 5% tariff on all goods coming from Mexico starting on June 10 until illegal immigration across the southern border is stopped. </h6>
             </div>
           </div>
@@ -124,7 +124,7 @@
               <span class="badge d-none" id = "label4"> </span>
           </div>       
 
-          <div class="row mb-sm-2">
+          <div class="row mb-2">
             <div class="col-sm-auto">
               <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-chart">
                 <div class="toast-header">
@@ -142,7 +142,7 @@
             </div>
           </div>
 
-          <div class="row"> 
+          <div class="row mb-2"> 
             <div class="col-sm-12">
               <div class="toast" role="alert" style="max-width: 900px;" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-explanation">
                 <div class="toast-header">

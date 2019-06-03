@@ -6,8 +6,8 @@ class explain():
     def __init__(self, classifier):
         # the threshold that means import
 
-        self.pos_num = 1000
-        self.neg_num = 1500 #200/300 kcl
+        self.pos_num = 500
+        self.neg_num = 600 #200/300 kcl
 
         self.lr = classifier
         self.features = self.feature_arr()
