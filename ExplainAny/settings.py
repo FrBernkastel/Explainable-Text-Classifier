@@ -120,4 +120,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#ALLOWED_HOSTS = ['100.81.36.113']
+ALLOWED_HOSTS = ['3.13.20.167','ec2-18-221-102-194.us-east-2.compute.amazonaws.com','east-nlp.com']
