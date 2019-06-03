@@ -89,30 +89,30 @@
               
             </div>
             <p class="text-right text-black-50"><strong><span id="charCount">500</span></strong> more characters available.</p>        
-            <div class="row p-sm-3">
-              <div class="col-sm-4 text-left ">
+            <div class="row" style="padding-bottom: 50px;">
+              <div class="col-sm-4 text-left mb-2">
                 <button type="button" onclick="submitText();" class="btn btn-dark btn-block" disabled>
                   <span class="spinner-border spinner-border-sm d-none" id="load-spinner" role="status" aria-hidden="true"></span>
                   <span id = "predict-id">Predict</span>
                 </button>
               </div>
-              <div class="col-sm-4 text-right">
+              <div class="col-sm-4 text-right mb-2">
                 <button type="button" class="btn btn-outline-dark btn-block" onclick="clearText(this);">Clear</button>
               </div>
-              <div class="col-sm-4 text-right">
+              <div class="col-sm-4 text-right mb-2">
                 <button type="button" class="btn btn-outline-secondary btn-block" onclick="randomPredict(this);">Random</button>
               </div>
             </div>
         </div>
           
-        <div class = "col-sm-6">
-          <div class = "row mb-sm-2">
-              <div class = "col-sm-6 px-sm-1 rounded-1" id = "pos_paragraph">
+        <div class = "col-sm-6 mb-2">
+          <div class = "row mb-2">
+              <div class = "col-sm-6 px-sm-1 rounded-1 mb-2" id = "pos_paragraph">
                 <p hidden="hidden"> {{ pos_flag }} </p>
                 <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="top" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a positive review :)</a>
               </div>
 
-              <div class = "col-sm-6 px-sm-1 rounded-1" id = "neg_paragraph"> 
+              <div class = "col-sm-6 px-sm-1 rounded-1 mb-2" id = "neg_paragraph"> 
                 <p hidden="hidden"> {{ neg_flag }} </p>
                 <a tabindex="0" class="btn btn-outline-dark btn-block" role="button" data-placement="right" data-toggle="popover" data-trigger="focus"  data-content="probability: 50%"> It's a negative review :(</a>
               </div>
@@ -121,19 +121,19 @@
         
           <!--<div id="chartContainer" style="height: 100px; width: 100%;"></div> -->
 
-          <div class="row progress align-center mb-sm-2">
+          <div class="row progress align-center mb-2">
             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 50%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" id = "pos_bar"></div>
             <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 50%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" id = "neg_bar"></div>
           </div> 
 
-          <p class="pt-sm-4 text-left">
+          <p class="pt-4 text-left mb-2">
             <a class="btn btn-outline-dark" onclick="toggleToast();" role="button" aria-expanded="false">
               Explanation
             </a>
           </p>
 
-          <div class="row pb-sm-6 mb-sm-3">
-            <div class="col-sm-6">
+          <div class="row pb-6 mb-sm-2">
+            <div class="col-sm-6 mb-2">
               <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-conclusion">
                 <div class="toast-header">
                   <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
@@ -148,7 +148,7 @@
                 </div>
               </div>              
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 mb-2">
               <div class="toast" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-probability">
                 <div class="toast-header">
                   <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
@@ -165,7 +165,7 @@
             </div>
           </div>
 
-          <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-confidence">
+          <div class="toast mb-2" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-confidence">
             <div class="toast-header">
               <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
               <strong class="mr-auto">Confidence</strong>
@@ -179,7 +179,7 @@
             </div>
           </div>
 
-          <div class="toast" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-explanation">
+          <div class="toast mb-2" style="max-width: 900px" role="alert" data-autohide="false" aria-live="assertive" aria-atomic="true" id="toast-explanation">
             <div class="toast-header">
               <i class="fas fa-square m-1 text-success" style = "font-size: 1.5em"></i>
               <strong class="mr-auto">Explanation</strong>

@@ -30,7 +30,7 @@ class explain():
         feature_names = self.lr._vectorize.get_feature_names() #liu
         # coef (31, 30000)
         self.coefs = self.lr.cls.coef_
-        self.pos_num = 1000
+        self.pos_num = 800
 
         self.thresholds = []
         for i in range(len(self.coefs)):
