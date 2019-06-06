@@ -3,7 +3,7 @@
 
 # Import libararies
 import re
-import pandas as pd # CSV file I/O (pd.read_csv)
+import pandas as pd 
 from nltk.corpus import stopwords
 import numpy as np
 import sklearn
@@ -45,28 +45,20 @@ class explain():
         # print('convert data')
         # Convert pandas series into numpy array
         X_test = np.array([input_text, "Will Smith Joins Diplo And Nicky Jam For The 2018 World Cup Official Song"])
-        cleanHeadlines_test = [] #To append processed headlines
-        number_reviews_test = len(X_test) #Calculating the number of reviews
 
-        # print('clean headline')
-        # from nltk.stem import PorterStemmer, WordNetLemmatizer
+        # from nltk.stem import WordNetLemmatizer
         lemmetizer = WordNetLemmatizer()
-        stemmer = PorterStemmer()
-        def get_words(headlines_list):
-            headlines = headlines_list   
-            headlines_only_letters = re.sub('[^a-zA-Z]', ' ', headlines)
-            words = nltk.word_tokenize(headlines_only_letters.lower())
+        def fetch_words(headline):
+            line = headline
+            line_only_alpha = re.sub('[^a-zA-Z]', ' ', line)
+            words = nltk.word_tokenize(line_only_alpha.lower())
             stops = set(stopwords.words('english'))
-            meaningful_words = [lemmetizer.lemmatize(w) for w in words if w not in stops]
-            return ' '.join(meaningful_words )
+            meaningful = [lemmetizer.lemmatize(w) for w in words if w not in stops]
+            return ' '.join(meaningful )
 
-
-        for i in range(0,number_reviews_test):
-            cleanHeadline = get_words(X_test[i]) #Processing the data and getting words with no special characters, numbers or html tags
-            cleanHeadlines_test.append( cleanHeadline )
-
-        tfidwords_test = self.lr._vectorize.transform(cleanHeadlines_test)
-        X_test = tfidwords_test.toarray()
+        X_test_clean = [fetch_words(elem) for elem in X_test]
+        test_tfidf = self.lr._vectorize.transform(X_test_clean)
+        X_test = test_tfidf.toarray()
 
         def tag_proba_func(tag, proba):
             res = []
@@ -85,7 +77,7 @@ class explain():
         # feature names len()=30000
         feature_names = self.lr._vectorize.get_feature_names()
         # transform (1, 30000)
-        input_transform = tfidwords_test[0]
+        input_transform = test_tfidf[0]
         input_transform_indices = list()
         for e in input_transform.indices:
             input_transform_indices.append(int(e))
