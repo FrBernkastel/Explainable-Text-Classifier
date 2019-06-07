@@ -120,4 +120,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#ALLOWED_HOSTS = ['100.81.36.113']
+#ALLOWED_HOSTS = ['east-nlp.com']
