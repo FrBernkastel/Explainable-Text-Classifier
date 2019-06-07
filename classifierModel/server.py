@@ -88,17 +88,7 @@ class PredictServer(rpyc.Service):
         except:
             pass
 
-
-
         res = self.ip2.predict_topk(text, 5)
-
-        tmp = list()
-        for tup in res['topk_label_proba']:
-            if tup[1] >= 1/31:
-                tmp.append(tup)
-        res['topk_label_proba'] = tmp
-
-
 
         # res['labels_prob'] = [0.03528977019242901 * 31] #acsending sort
         # res['topk_label_proba'] =  [('SPORTS', 0.03528977019242901) * 5] #acsending sort
